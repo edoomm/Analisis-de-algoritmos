@@ -117,13 +117,13 @@ x = []  # Puntos en x de la grafica
 y = []  # Puntos en y de la grafica
 # fc = [] # Funcion que cota
 
-while i <= 5:
+while i <= 20:
     tiempoInicial = time.time()
-    ProducM(RellenarMatriz(int(math.pow(i, 2))), RellenarMatriz(int(math.pow(i, 2)))) # Normal
-    # strassen(RellenarMatriz(int(math.pow(i, 2))), RellenarMatriz(int(math.pow(i, 2)))) # Strassen
+    ProducM(RellenarMatriz(int(math.pow(2, i))), RellenarMatriz(int(math.pow(2, i)))) # Normal
+    # strassen(RellenarMatriz(int(math.pow(2, i))), RellenarMatriz(int(math.pow(2, i)))) # Strassen
     tiempoFinal = time.time() - tiempoInicial
-    print("Multiplicacion de matrices de tamaño", math.pow(i, 2) , "a través del método normal\n---Calculado en", tiempoFinal, "segundos") # Normal
-    # print("Multiplicacion de matrices de tamaño", math.pow(i, 2), "a través del algoritmo de Strassen\n---Calculado en", tiempoFinal, "segundos") # Strassen
+    print("Multiplicacion de matrices de tamaño", math.pow(2, i) , "a través del método normal\n---Calculado en", tiempoFinal, "segundos") # Normal
+    # print("Multiplicacion de matrices de tamaño", math.pow(2, i), "a través del algoritmo de Strassen\n---Calculado en", tiempoFinal, "segundos") # Strassen
     x.insert(0, i)
     y.insert(0, tiempoFinal)
     # fc.insert(i,(1/150000)*math.pow(i,3)) # Normal
