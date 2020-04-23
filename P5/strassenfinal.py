@@ -16,6 +16,9 @@ acum=0
 acum1=0
 
 import random
+import time                     # Libereria para obtener el tiempo de ejecucion
+import matplotlib.pyplot as plt # Libreria para graficas
+import math
 
 def CrearMatriz(fc):                    # DEFINICIÓN E IMPLEMENTACIÓN DE LA FUNCIÓN 'CREARMATRIZ' EN LA QUE SE INICIALIZA UNA MATRIZ TAMAÑO FC*FC
     A=[]                                # DECLARACIÓN  DEL ARREGLO 'A' DE TAMAÑO NULO
@@ -61,6 +64,9 @@ def restarDe(A, B):           # DEFINICIÓN E IMPLEMENTACIÓN DE LA FUNCIÓN 'RE
             C[i][j] = A[i][j] - B[i][j]
     return C
 
+#
+#   Chansón no nos pueden dar las gráficas porque se usa ProducM
+#
 def strassen(A, B):           # (1) DEFINICIÓN E IMPLEMENTACIÓN DE LA FUNCIÓN 'STRASSEN' QUE SE ENCARGA DE DIVIDIR LOS ARREGLOS PRINCIPALES EN 4 SUBARREGLOS C/U
                               # (2) RECURSIVAMENTE, HASTA QUE SE ALCANCE EL TAMAÑO 'LOSUFICIENTEMENTEPEQUEÑITO' PARA EJECUTAR EL ÚLTIMO PRODUCTO MEDIANTE EL
                               # (3) ALGORITMO TRADICIONAL
@@ -106,36 +112,31 @@ def strassen(A, B):           # (1) DEFINICIÓN E IMPLEMENTACIÓN DE LA FUNCIÓN
         return C
 
 
-print("Elija una opción :")
-m=int(input("\t1. Producto de 2 matrices por Strassen. \n\t2. Producto de 2 matrices tradicional. \n\t3. Salir.\n"))
-if m==1:
-    print("Recordar que las matrices deben ser cuadradas potencias de 2.\n")
-    fc=int(input("Número de filas y columnas para ambos arreglos :"))
-    print("Matriz A:")
-    A=RellenarMatriz(fc)
-    print("Matriz B:")
-    B=RellenarMatriz(fc)
-    print("Los matrices dadas son:")
-    print(A)
-    print(B)
-    print("La matriz resultante es:")
-    C=strassen(A,B)
-    print(C)
+i = 1
+x = []  # Puntos en x de la grafica
+y = []  # Puntos en y de la grafica
+# fc = [] # Funcion que cota
 
+while i <= 5:
+    tiempoInicial = time.time()
+    ProducM(RellenarMatriz(int(math.pow(i, 2))), RellenarMatriz(int(math.pow(i, 2)))) # Normal
+    # strassen(RellenarMatriz(int(math.pow(i, 2))), RellenarMatriz(int(math.pow(i, 2)))) # Strassen
+    tiempoFinal = time.time() - tiempoInicial
+    print("Multiplicacion de matrices de tamaño", math.pow(i, 2) , "a través del método normal\n---Calculado en", tiempoFinal, "segundos") # Normal
+    # print("Multiplicacion de matrices de tamaño", math.pow(i, 2), "a través del algoritmo de Strassen\n---Calculado en", tiempoFinal, "segundos") # Strassen
+    x.insert(0, i)
+    y.insert(0, tiempoFinal)
+    # fc.insert(i,(1/150000)*math.pow(i,3)) # Normal
+    # # fc.insert(i,(1/150000)*math.pow(i,2.8074)) # Strassen
 
-elif m==2:
-    print("Recordar que las matrices deben ser cuadradas potencias de 2.\n")
-    fc=int(input("Número de filas y columnas para ambos arreglos :"))
-    print("Matriz A:")
-    A=RellenarMatriz(fc)
-    print("Matriz B:")
-    B=RellenarMatriz(fc)
-    print("Las matrices dadas son:")
-    print(A)
-    print(B)
-    print("La matriz resultante es:")
-    C=ProducM(A,B)
-    print(C)
-    ExisteONo("tradicional.txt")
-    ImprimirArc("tradicional.txt",fc,acum1)
-print("Gracias por utilizar este programa.")
+    i += 1
+
+fig, ax = plt.subplots()
+ax.plot(x, y)
+# ax.plot(fc)
+ax.grid(True, which='both')
+ax.axhline(y=0, color='k')
+ax.axvline(x=0, color='k')
+fig.suptitle("Grafica del algoritmo de multiplicacion normal de matrices") # Normal
+# fig.suptitle("Grafica del algoritmo de multiplicacion normal de matrices") # Strassen
+plt.show()
