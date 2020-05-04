@@ -6,7 +6,7 @@ def maxCrossingSubArray(A, bajo, mitad, alto):
     max_izq = -sys.maxsize
     suma = 0
 
-    for i in range(bajo, mitad):
+    for i in range(mitad, bajo-1, -1):
         suma += A[i]
         if suma > suma_izq:
             suma_izq = suma
@@ -16,7 +16,7 @@ def maxCrossingSubArray(A, bajo, mitad, alto):
     max_der = -sys.maxsize
     suma = 0
 
-    for i in range(mitad + 1, alto):
+    for i in range(mitad + 1, alto + 1):
         suma += A[i]
         if suma > suma_der:
             suma_der = suma
@@ -41,9 +41,13 @@ def maxSubArrayDC(A, bajo, alto):
 
 def tsts():
     A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7]
-    print("Encontrando maximo subarreglo de A:", A)
-    print(maxSubArrayDC(A, 0, len(A) - 1))
+    print("Encontrando maximo subarreglo de A:\n", A)
+    l, d, s = maxSubArrayDC(A, 0, len(A) - 1)
+    # print(l,d,s)
+    print(A[l:d+1], ", suma =", s)
 
     B = [1, -4, 3, -4]
-    print("Encontrando maximo subarreglo de B:", B)
-    print(maxSubArrayDC(B, 0, len(B) - 1))
+    print("Encontrando maximo subarreglo de B:\n", B)
+    l, d, s = maxSubArrayDC(B, 0, len(B) - 1)
+    # print(l,d,s)
+    print(B[l:d+1], ", suma =", s)
