@@ -52,9 +52,11 @@ def maxSubArrayDC(A, bajo, alto):
         else:
             return cruz_izq, cruz_der, suma_cruz
 
-def tsts():
-    A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7]
-    B = [1, -4, 3, -4]
+def maximoSubarreglo(A):
+
+
+    # A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7]
+    # B = [1, -4, 3, -4]
 
     # print("Encontrando maximo subarreglo cruzado de A:\n", A)
     # print(maxCrossingSubArray(A, 0, int(len(A)/2), len(A) - 1))
@@ -66,7 +68,7 @@ def tsts():
     print(l,d,s)
     print(A[l:d+1], ", suma =", s)
 
-    print("Encontrando maximo subarreglo de B:\n", B)
-    l, d, s = maxSubArrayDC(B, 0, len(B) - 1)
-    print(l,d,s)
-    print(B[l:d+1], ", suma =", s)
+    # print("Encontrando maximo subarreglo de B:\n", B)
+    # l, d, s = maxSubArrayDC(B, 0, len(B) - 1)
+    # print(l,d,s)
+    # print(B[l:d+1], ", suma =", s)

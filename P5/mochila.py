@@ -11,6 +11,11 @@
     PRÁCTICA 5 "DIVIDE Y VENCERAS Y ALGORITMOS VORACES"
 """
 
+import random
+
+def crearLista(n, a, b):
+    return [random.randint(a, b) for i in range (0, n)]
+
 def seleccionarMayor(L):
     idx = 0
     max = L[idx]
@@ -71,7 +76,7 @@ def mochilaFraccionaria(b, w, P, o):
 
     return ben, x
 
-def tsts():
+def tstDiapo():
     print("Ejemplo de la diapositiva")
     b = [20, 30, 65, 40, 60]
     w = [10, 20, 30, 40, 50]
@@ -94,3 +99,26 @@ def tsts():
     ben, frac = mochilaFraccionaria(b, w, p, 3)
     print("Fracciones:", frac)
     print("Beneficio: $" + str(ben))
+
+b = crearLista(8, 10, 90)
+w = crearLista(8, 100, 400)
+p = 300
+
+print("Beneficio ($):\t", b)
+print("Peso (kg):\t", w)
+print("Peso total que puede cargar la mochila:", p)
+
+print("\n------Seleccion por menor peso")
+ben, frac = mochilaFraccionaria(b, w, p, 1)
+print("Fracciones:", frac)
+print("Beneficio: $" + str(ben))
+
+print("\n------Seleccion por mayor beneficio")
+ben, frac = mochilaFraccionaria(b, w, p, 2)
+print("Fracciones:", frac)
+print("Beneficio: $" + str(ben))
+
+print("\n------Seleccion por mayor valor por unidad de peso")
+ben, frac = mochilaFraccionaria(b, w, p, 3)
+print("Fracciones:", frac)
+print("Beneficio: $" + str(ben))
