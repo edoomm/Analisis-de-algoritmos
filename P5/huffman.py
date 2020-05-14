@@ -13,6 +13,13 @@
 
 import random
 import heapq # Librearia para cola de prioridad
+import arbolBinario as ab
+import copy # Para hacer deepcopy de los nodos
+
+#
+#   Crear arbol de la diapositiva con la clase Nodo
+#   Todos los elementos de la lista serán nodos -> Almacenar en otra lista sus frecuencias y hacer heapify ahí
+#
 
 # Función para generar original.txt (i)
 def generarOriginal(tam, num):
@@ -52,3 +59,47 @@ def huffman(freq):
 # Función para generar original_codificado.txt (iii)
 def generarCodificado(fileN):
     print(generarFrecuencias(fileN))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#~Fin
