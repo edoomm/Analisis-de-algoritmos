@@ -1,3 +1,8 @@
+import sys
+sys.setrecursionlimit(1500)
+
+import copy
+
 class Nodo:
     def __init__(self, freq, car):
         self.izq = None
@@ -17,7 +22,7 @@ class Nodo:
             print("Error al insertar hojas de nodo: Hojas a insertar no son de tipo Nodo")
 
     def __str__(self):
-        if self.car == None:
+        if self.car == "":
             return str(self.freq)
         else:
             return "(" + str(self.car) + ", " + str(self.freq) + ")"
@@ -26,15 +31,33 @@ class Nodo:
         return self.freq
 
 class Arbol:
-    def __init__(self):
-        self.rt = None
+    def __init__(self, raiz):
+        if isinstance(raiz, Nodo):
+            self.raiz = raiz
+        else:
+            print("Error al crear el arbol: Variable en el constructor no es de tipo arbolbinario.Nodo")
+            self.raiz = None
 
-    def setRoot(self, rt):
-        self.rt = rt
+    def recorrer(self, raiz):
+        if raiz.car != "":
+            c = raiz.car
+            raiz.car = "-1"
+            return ":" + c
+
+        if raiz.izq.car != "-1":
+            return "0" + self.recorrer(raiz.izq)
+        else:
+            if raiz.der.car != "": # ERROR: Chance aqui hay
+                raiz.car = "-1"
+            return "1" + self.recorrer(raiz.der)
+
+    def codificar(self, num):
+        rz = copy.deepcopy(self.raiz)
+        for n in range(num):
+            print(self.recorrer(rz))
 
     def __str__(self):
-        return str(self.rt)
-
+        return "(" + str(self.raiz) + ")"
 
 
 

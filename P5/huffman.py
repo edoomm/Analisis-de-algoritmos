@@ -11,10 +11,12 @@
     PRÁCTICA 5 "DIVIDE Y VENCERAS Y ALGORITMOS VORACES"
 """
 
+# Ejemplo diapositiva:
+# {'a': 45, 'b': 13, 'c': 12, 'd': 16, 'e': 9, 'f': 5}
+
 import random
 import arbolbinario as ab
 import colaprioridad as cp
-import copy # Para hacer deepcopy de los nodos
 import ast
 
 #
@@ -49,7 +51,6 @@ def generarFrecuencias(fileN):
         file.write(str(frecuencias))
 
     print("frecuencias.txt creado")
-    return frecuencias
 
 # Función que crea arbol para la codificacion Huffman
 def huffman(freq):
@@ -60,23 +61,27 @@ def huffman(freq):
     for e in CP:
         Q.insertar(e)
 
-    print(Q)
     for i in range(n - 1):
         x = Q.extraer()
         y = Q.extraer()
-        z = ab.Nodo(x.freq + y.freq, None)
+        z = ab.Nodo(x.freq + y.freq, "")
         z.insertarHojas(x, y)
         Q.insertar(z)
-        print(Q)
 
-    return Q
+    return Q.listaNodos[0], CP
 
 # Función para generar original_codificado.txt (iii)
 def generarCodificado(fileN):
     with open(fileN, "r+") as file:
         freq = ast.literal_eval(file.read())
 
-    return huffman(freq)
+    root, cola = huffman(freq)
+    arbol = ab.Arbol(root)
+    return arbol, cola
+
+
+
+
 
 
 
