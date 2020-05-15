@@ -1,24 +1,29 @@
 class Nodo:
-    def __init__(self, f, c):
-        self.l = None
-        self.r = None
-        self.f = f
-        self.c = c
+    def __init__(self, freq, car):
+        self.izq = None
+        self.der = None
+        self.freq = freq
+        self.car = car
 
-    def aniadirHijos(self, nodo1, nodo2):
+    def insertarHojas(self, nodo1, nodo2):
         if isinstance(nodo1, Nodo) and isinstance(nodo2, Nodo):
-            if nodo1.f < nodo2.f:
-                self.l = nodo1
-                self.r = nodo2
+            if nodo1.freq < nodo2.freq:
+                self.izq = nodo1
+                self.der = nodo2
             else:
-                self.l = nodo2
-                self.r = nodo1
+                self.izq = nodo2
+                self.der = nodo1
+        else:
+            print("Error al insertar hojas de nodo: Hojas a insertar no son de tipo Nodo")
 
     def __str__(self):
-        if self.c == None:
-            return str(self.f)
+        if self.car == None:
+            return str(self.freq)
         else:
-            return "(" + str(self.c) + ", " + str(self.f) + ")"
+            return "(" + str(self.car) + ", " + str(self.freq) + ")"
+
+    def __int__(self):
+        return self.freq
 
 class Arbol:
     def __init__(self):
@@ -29,3 +34,47 @@ class Arbol:
 
     def __str__(self):
         return str(self.rt)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#~Fin

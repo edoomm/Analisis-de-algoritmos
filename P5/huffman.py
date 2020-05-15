@@ -12,9 +12,10 @@
 """
 
 import random
-import heapq # Librearia para cola de prioridad
-import arbolBinario as ab
+import arbolbinario as ab
+import colaprioridad as cp
 import copy # Para hacer deepcopy de los nodos
+import ast
 
 #
 #   Crear arbol de la diapositiva con la clase Nodo
@@ -53,12 +54,29 @@ def generarFrecuencias(fileN):
 # Función que crea arbol para la codificacion Huffman
 def huffman(freq):
     n = len(freq.keys())
-    Q = heapq.heapify(freq.values())
+    # Acomoda la lista por orden de frecuencias
+    CP = [ab.Nodo(v, k) for k, v in freq.items()]
+    Q = cp.ColaPrioridad()
+    for e in CP:
+        Q.insertar(e)
+
     print(Q)
+    for i in range(n - 1):
+        x = Q.extraer()
+        y = Q.extraer()
+        z = ab.Nodo(x.freq + y.freq, None)
+        z.insertarHojas(x, y)
+        Q.insertar(z)
+        print(Q)
+
+    return Q
 
 # Función para generar original_codificado.txt (iii)
 def generarCodificado(fileN):
-    print(generarFrecuencias(fileN))
+    with open(fileN, "r+") as file:
+        freq = ast.literal_eval(file.read())
+
+    return huffman(freq)
 
 
 
