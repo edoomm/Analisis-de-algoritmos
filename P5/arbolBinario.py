@@ -1,3 +1,16 @@
+"""
+        INSTITUTO POLITÉCNICO NACIONAL
+        ESCUELA SUPERIOR DE CÓMPUTO
+
+    ANÁLISIS DE ALGORITMOS
+    GRUPO: 3CV2
+    ALUMNOS:
+            - AGUILAR GONZALEZ DANIEL
+            - MENDOZA MARTINEZ EDUARDO
+    PROFESOR: DR. BENJAMÍN LUNA BENOSO
+    PRÁCTICA 5 "DIVIDE Y VENCERAS Y ALGORITMOS VORACES"
+"""
+
 import sys
 sys.setrecursionlimit(1500)
 
@@ -10,6 +23,7 @@ class Nodo:
         self.freq = freq
         self.car = car
 
+    # Inserta hojas dependiendo de que valor de frecuencia sea más grande de cada nodo
     def insertarHojas(self, nodo1, nodo2):
         if isinstance(nodo1, Nodo) and isinstance(nodo2, Nodo):
             if nodo1.freq < nodo2.freq:
@@ -38,23 +52,63 @@ class Arbol:
             print("Error al crear el arbol: Variable en el constructor no es de tipo arbolbinario.Nodo")
             self.raiz = None
 
+    def obtenerHojaMasDerecha(self, raiz):
+        if raiz.izq == raiz.der == None:
+            return raiz
+        else:
+            return self.obtenerHojaMasDerecha(raiz.der)
+
+    # Función que imprime [raices] con sus hojas de izq -> der
+    def imprimir(self, raiz):
+        if raiz == None:
+            return
+
+        if raiz.izq == None and raiz.der == None:
+            print(raiz)
+            return
+
+        if raiz.izq != None:
+            self.imprimir(raiz.izq)
+        if raiz.der != None:
+            self.imprimir(raiz.der)
+
+        print("[", raiz, "]")
+
+    # Función para recorrer el arbol con etiquetas
+    # 0: Izquierda
+    # 1: Derecha
     def recorrer(self, raiz):
-        if raiz.car != "":
+        if raiz.izq == None and raiz.der == None: # Es hoja
             c = raiz.car
-            raiz.car = "-1"
+            raiz.car = "-1" # Se coloca un -1 para "invalidar" dicho nodo
             return ":" + c
 
         if raiz.izq.car != "-1":
             return "0" + self.recorrer(raiz.izq)
-        else:
-            if raiz.der.car != "": # ERROR: Chance aqui hay
-                raiz.car = "-1"
+        if raiz.der.car != "-1":
             return "1" + self.recorrer(raiz.der)
 
-    def codificar(self, num):
+        if raiz.izq.car == raiz.der.car == "-1":
+            raiz.car = "-1"
+
+        return ""
+
+    def obtenerCodificacion(self):
+        # Hacemos una copia de nuestro arbol principal para sobreescribirlo
         rz = copy.deepcopy(self.raiz)
-        for n in range(num):
-            print(self.recorrer(rz))
+        # Obtenemos la hoja más a la derecha, ya que iremos recorriendo el arbol de izq -> der
+        ed = self.obtenerHojaMasDerecha(self.raiz).car
+
+        codificacion = {}
+        # Mientras que la hoja más a la derecha no este en nuestras llaves de nuestro diccionario seguirá obteniendo los recorridos hasta encontrarlo
+        while ed not in codificacion.keys():
+            d = self.recorrer(rz)
+
+            # Si no tiene el caracter ':' significa que todavía no es una clave con su valor, ej: "0:a", "100:c", etc.
+            if ':' in d:
+                codificacion[d[d.index(':') + 1 :]] = d[: d.index(':')]
+
+        return codificacion
 
     def __str__(self):
         return "(" + str(self.raiz) + ")"

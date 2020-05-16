@@ -19,11 +19,6 @@ import arbolbinario as ab
 import colaprioridad as cp
 import ast
 
-#
-#   Crear arbol de la diapositiva con la clase Nodo
-#   Todos los elementos de la lista serán nodos -> Almacenar en otra lista sus frecuencias y hacer heapify ahí
-#
-
 # Función para generar original.txt (i)
 def generarOriginal(tam, num):
     # Generando caracteres de manera aleatoria a partir del número de letras que se quiera con num y de tamaño tam
@@ -68,17 +63,32 @@ def huffman(freq):
         z.insertarHojas(x, y)
         Q.insertar(z)
 
-    return Q.listaNodos[0], CP
+    return Q.listaNodos[0]
 
 # Función para generar original_codificado.txt (iii)
-def generarCodificado(fileN):
-    with open(fileN, "r+") as file:
+def generarCodificado(fileOg, fileFreq):
+    with open(fileFreq, "r") as file:
         freq = ast.literal_eval(file.read())
 
-    root, cola = huffman(freq)
-    arbol = ab.Arbol(root)
-    return arbol, cola
+    # Obtenemos la codificacion a partir del algoritmo de Huffman
+    arbol = ab.Arbol(huffman(freq))
+    codificacion = arbol.obtenerCodificacion()
 
+    # Generamos el codificado a partir de la codificacion
+    codificado = ""
+    with open(fileOg) as file:
+        for line in file: # No es O(n^2) ya que solo se tiene una sola linea en todos los casos, sin embargo así hay que ponerlo en Python
+            for c in line:
+                codificado += codificacion[c]
+
+    with open("original_codificado.txt", "w") as file:
+        file.write(codificado)
+
+    return codificacion
+
+# Función para generar original_compr.txt (iv)
+def generarComprimido(fileN):
+    return
 
 
 
