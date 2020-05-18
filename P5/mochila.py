@@ -100,9 +100,9 @@ def tstDiapo():
     print("Fracciones:", frac)
     print("Beneficio: $" + str(ben))
 
-b = crearLista(8, 10, 90)
-w = crearLista(8, 100, 400)
-p = 300
+b = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+w = [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15]
+p = 150
 
 print("Beneficio ($):\t", b)
 print("Peso (kg):\t", w)
