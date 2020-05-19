@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt # Libreria para graficas
 import math
 # from maxSubarreglo import * # Importando funciones de Maximo Subarreglo DC
 from mochila import * # Importando funciones de la mochila fraccionaria
+from monedas import *
 
 def crearLista(n, a, b):
     return [random.randint(a, b) for i in range (0, n)]
@@ -30,20 +31,24 @@ x.insert(0, 0)
 y.insert(0, 0)
 fc.insert(0, 0)
 
-while i <= 1000:
+while i <= 10000:
     tiempoInicial = time.time()
     # maxSubArrayDC(crearLista(i, -100, 100), 0, int((i - 1)/2), i - 1) # Cruzado
     # maxSubArrayDC(crearLista(i, -100, 100), 0, i - 1) # MaxSubarrayDc
-    mochilaFraccionaria(crearLista(i, 1, 100), crearLista(i, 1, 100), random.randint(50, 100), 3)
+    # mochilaFraccionaria(crearLista(i, 1, 100), crearLista(i, 1, 100), random.randint(50, 100), 3)
+    c = cambio(i, obtenerMatriz(), obtenerMatriz())
     tiempoFinal = time.time() - tiempoInicial
     # print("Maximo subarreglo cruzado de arreglo de tamaño", i, "\n---Encontrado en", tiempoFinal, "segundos") # Cruzado
     # print("Maximo subarreglo DC de arreglo de tamaño", i, "\n---Encontrado en", tiempoFinal, "segundos") # MaxSubarrayDc
-    print("Mochila fraccionaria con arreglos de tamaño", i, "\n---Encontrado en", tiempoFinal, "segundos")
+    # print("Mochila fraccionaria con arreglos de tamaño", i, "\n---Encontrado en", tiempoFinal, "segundos")
+    print("Total:", i, " Cambio:", c, "\n---Calculado en", tiempoFinal, "segundos")
     x.insert(0, i)
     y.insert(0, tiempoFinal)
     # # f.insert(i,(1/390000) * i) # Cruzado
     # # f.insert(i,(1/1000000) * i * (math.log(i)/math.log(2))) # MaxSubarrayDc
-    fc.insert(i,(1/1150000) * i * (math.log(i)/math.log(2)))
+    # fc.insert(i,(1/1150000) * i * (math.log(i)/math.log(2)))
+    fc.insert(i,(1/5000000) * i)
+
 
     i += 1
 
@@ -55,5 +60,6 @@ ax.axhline(y=0, color='k')
 ax.axvline(x=0, color='k')
 # fig.suptitle("Grafica del maximo subarreglo cruzado") # Cruzado
 # fig.suptitle("Grafica del maximo subarreglo DC") # MaxSubarrayDc
-fig.suptitle("Grafica de la mochila fraccionaria")
+# fig.suptitle("Grafica de la mochila fraccionaria")
+fig.suptitle("Grafica del cambio de monedas")
 plt.show()
