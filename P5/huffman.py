@@ -62,12 +62,15 @@ def huffman(freq):
     for e in CP:
         Q.insertar(e)
 
+    print(Q)
+
     for i in range(n - 1):
         x = Q.extraer()
         y = Q.extraer()
         z = ab.Nodo(x.freq + y.freq, "")
         z.insertarHojas(x, y)
         Q.insertar(z)
+        print(Q)
 
     return Q.listaNodos[0]
 
@@ -83,7 +86,7 @@ def generarCodificacion(fileN):
     with codecs.open("codificacion.txt", encoding="utf-8", mode="w") as file:
         file.write(str(codificacion))
 
-    return codificacion
+    return arbol
 
 # Función para generar original_codificado.txt (iii)
 def generarCodificado(fileOg, fileCod):
@@ -113,12 +116,15 @@ def generarComprimido(fileN):
                 paq += line[i]
                 if ((i + 1) % 8) == 0:
                     comprimido += chr(int(paq, 2))
+                    print(int(paq, 2), end=" ")
                     paq = ""
 
     # Leyendo último paquete de 8 bits y colocando cuantos bits se tomaran de este sobrante
     s = "," + str(len(paq) % 8)
     for p in range(len(paq), 8):
         paq += "0"
+
+    print(int(paq, 2))
 
     comprimido += chr(int(paq, 2)) + s
 
