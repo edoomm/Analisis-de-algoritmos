@@ -1,3 +1,18 @@
+"""
+        INSTITUTO POLITÉCNICO NACIONAL
+        ESCUELA SUPERIOR DE CÓMPUTO
+
+    ANÁLISIS DE ALGORITMOS
+    GRUPO: 3CV2
+    ALUMNOS:
+            - AGUILAR GONZALEZ DANIEL
+            - MENDOZA MARTINEZ EDUARDO
+    PROFESOR: DR. BENJAMÍN LUNA BENOSO
+    PRÁCTICA 6 "PROGRAMACIÓN DINÁMICA"
+
+    IMPLEMENTACIÓN DEL ALGORITMO DE LA MOCHILA ENTERA
+"""
+
 import random
 
 def crearLista(n, a, b):
@@ -48,9 +63,3 @@ def mochilaEntera(b, w, P):
     print("\nBeneficios y pesos de los objetos guardados")
     print("Beneficio: \t$", ben)
     print("Peso: \t\t ", peso)
-
-
-b = [38, 40, 24]
-w = [9, 6, 5]
-P = 15
-g = generarTabla(w, b, P)
