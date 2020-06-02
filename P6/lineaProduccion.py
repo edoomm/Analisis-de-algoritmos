@@ -151,15 +151,16 @@ def lineaprod2(n, a, t, e, x):
     imprimirLineaProduccion(n-1, I, Ia)
 
 a = []
-a.append([7,9,3,4,8,4])
-a.append([8,5,6,4,5,7])
+a.append([7,5,4,6])
+a.append([5,8,3,9])
 n = len(a[0])
 
 t = []
-t.append([2,3,1,3,4])
-t.append([2,1,2,2,1])
+t.append([2,1,2])
+t.append([3,2,1])
 
-e = [2,4]
-x = [3,7]
+e = [2,3]
+x = [3,4]
 
 f, fa, I, Ia = generarTablas(len(a[0]), a, t, e, x)
+lineaprod2(n, a, t, e, x)
