@@ -1,3 +1,16 @@
+"""
+        INSTITUTO POLITÉCNICO NACIONAL
+        ESCUELA SUPERIOR DE CÓMPUTO
+
+    ANÁLISIS DE ALGORITMOS
+    GRUPO: 3CV2
+    ALUMNOS:
+            - AGUILAR GONZALEZ DANIEL
+            - MENDOZA MARTINEZ EDUARDO
+    PROFESOR: DR. BENJAMÍN LUNA BENOSO
+    PRÁCTICA 7 "VERIFICACION EN TIEMPO POLINOMIAL"
+"""
+
 class Grafo:
     def __init__(self, v, e):
         self.vertices = v # Lista normal
@@ -21,17 +34,28 @@ class Grafo:
 
         return "Grafo con " + str(len(self.vertices)) + " vertices y " + str(len(self.aristas)) + " aristas\n" + strv + "\n" + stra
 
-def crearRecorrido(a): # Función para crear listas de tuplas (aristas)
-    l = []
-    for i in range(len(a)):
-        if i == 0:
-            t = (a[i], a[i+1])
-            l.append(t)
-        elif i < len(a)-1:
-            t = (a[i], a[i+1])
-            l.append(t)
+class Camino:
+    def __init__(self, r):
+        l = []
+        for i in range(len(r)):
+            if i == 0:
+                t = (r[i], r[i+1])
+                l.append(t)
+            elif i < len(r)-1:
+                t = (r[i], r[i+1])
+                l.append(t)
 
-    return l
+        self.recorrido = l # Lista de tuplas
+
+    def __str__(self):
+        strr = ""
+        for e in self.recorrido:
+            if e != self.recorrido[len(self.recorrido)-1]:
+                strr += str(e[0]) + "-"
+            else:
+                strr += str(e[0]) + "-" + str(e[1])
+
+        return strr
 
 def Verificacion_Hamilton(G, C):
     d = {} # Diccionario para ver si estan todos los vertices del grafo y si estos son recorridos 2 veces
@@ -39,7 +63,7 @@ def Verificacion_Hamilton(G, C):
     # d.values = Número de veces que se recorrio el vertice
 
     # Se recorre el certificado
-    for t in C:
+    for t in C.recorrido:
         # Verifica que el recorrido este en las aristas del grafo
         if t in G.aristas or t[::-1] in G.aristas:
             # Mete los vertices del recorrido a la lista v
@@ -55,7 +79,7 @@ def Verificacion_Hamilton(G, C):
             print("No existe arista", t)
             return 0
 
-    if len(d.keys() != len(G.vertices)):
+    if len(d.keys()) != len(G.vertices):
         print("No se recorrieron todos los vertices")
         return 0
 
@@ -67,8 +91,8 @@ def Verificacion_Hamilton(G, C):
     return 1
 
 g = Grafo([1,2,3,4,5], [(1,2),(1,3),(1,5),(2,3),(2,5),(2,4),(3,4),(4,5)])
-cert1 = crearRecorrido([1,2,3,4,5,1])
-cert2 = crearRecorrido([1,2,4,3,5,1])
-cert3 = crearRecorrido([1,3,2,4,3,1])
-cert4 = crearRecorrido([2,4,3,1,5,2])
-cert5 = crearRecorrido([5,4,3,2,1,5])
+cert1 = Camino([1,2,3,4,5,1])
+cert2 = Camino([1,2,4,3,5,1])
+cert3 = Camino([1,3,2,4,3,1])
+cert4 = Camino([2,4,3,1,5,2])
+cert5 = Camino([5,4,3,2,1,5])
