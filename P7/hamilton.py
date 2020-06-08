@@ -73,26 +73,19 @@ def Verificacion_Hamilton(G, C):
                 elif d[e] == 1: # Incrementa en 2 al ser recorrido por segunda vez el vertice
                     d[e] += 1
                 else: # Es recorrido más de una vez
-                    print("El vertice", e, "es recorrido mas de una vez")
+                    # print("El vertice", e, "es recorrido mas de una vez")
                     return 0
         else:
-            print("No existe arista", t)
+            # print("No existe arista", t)
             return 0
 
     if len(d.keys()) != len(G.vertices):
-        print("No se recorrieron todos los vertices")
+        # print("No se recorrieron todos los vertices")
         return 0
 
     for v in d.values():
         if v != 2:
-            print("(ERROR) Un vertice no fue recorrido de la manera correcta\n[Posible error en la manera de utilizar crearRecorrido(a)]")
+            # print("(ERROR) Un vertice no fue recorrido de la manera correcta\n[Posible error en la manera de utilizar crearRecorrido(a)]")
             return 0
 
     return 1
-
-g = Grafo([1,2,3,4,5], [(1,2),(1,3),(1,5),(2,3),(2,5),(2,4),(3,4),(4,5)])
-cert1 = Camino([1,2,3,4,5,1])
-cert2 = Camino([1,2,4,3,5,1])
-cert3 = Camino([1,3,2,4,3,1])
-cert4 = Camino([2,4,3,1,5,2])
-cert5 = Camino([5,4,3,2,1,5])
