@@ -1,0 +1,834 @@
+\documentclass[12pt,twoside]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsmath}
+\usepackage[active]{srcltx}
+\usepackage{amssymb}
+\usepackage{amscd}
+\usepackage{makeidx}
+\usepackage{amsthm}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\renewcommand{\baselinestretch}{1}
+\setcounter{page}{1}
+\setlength{\textheight}{21.6cm}
+\setlength{\textwidth}{14cm}
+\setlength{\oddsidemargin}{1cm}
+\setlength{\evensidemargin}{1cm}
+\pagestyle{myheadings}
+\thispagestyle{empty}
+\markboth{\small{Pr\'actica 4. Eduardo, Daniel.}}{\small{.}}
+\date{}
+\begin{document}
+\centerline{\bf An\'alisis de Algoritmos, Sem: 2020-1, 3CV2, Pr\'actica 4, 01 de abril de 2020}
+\centerline{}
+\centerline{}
+\begin{center}
+\Large{\textsc{Pr\'actica 4: Divide y vencerás}}
+\end{center}
+\centerline{}
+\centerline{\bf {Mendoza Mart\'inez Eduardo, Aguilar Gonzalez Daniel.}}
+\centerline{}
+\centerline{Escuela Superior de C\'omputo}
+\centerline{Instituto Polit\'ecnico Nacional, M\'exico}
+\centerline{$edoomm8@gmail.com, daguilarglz97@gmail.com$}
+\newtheorem{Theorem}{\quad Theorem}[section]
+\newtheorem{Definition}[Theorem]{\quad Definition}
+\newtheorem{Corollary}[Theorem]{\quad Corollary}
+\newtheorem{Lemma}[Theorem]{\quad Lemma}
+\newtheorem{Example}[Theorem]{\quad Example}
+\bigskip
+\textbf{Resumen:} La siguiente practica pretende mostrar el comportamiento de 2 algoritmos de ordenamiento diferentes comparando el n\'umero de elementos presentes en un arreglo `A' contra el tiempo de ejecuci\'on (tiempo que se tarda en ordenar); as\'i como la complejidad algor\'itmica, comparada contra la de la funcion Merge para uno y comparada con la funcion partition la cual se encarga de partir en 2 subarreglos el principal para aplicar el algoritmo divide y venceras en el caso del algoritmo Quick y el comportamiento de un algoritmo de multiplicacion de dos enteros.
+\section{Introducci\'on}
+Hemos estudiado diversos algoritmos de
+ordenaci\'on de un conjunto de elementos `n'. En esta ocasi\'on evaluaremos
+la eficiencia de dos de los m\'as populares: Merge Sort y Quick Sort visualizando el costo
+computacional de los algoritmos y sus partes (dos funciones, merge y partition) mediante demostraciones formales y graficas, justificando as\'i el porque se le asigna determinada complejidad algor\'itmica a cada uno.
+\section{Conceptos B\'asicos}
+Para el desarrollo de esta practica es necesario conocer conceptos de los cuales se hablara en el desarrollo de esta, as\'i como la descripcion de cada uno de los algoritmos que se trataran para poder entenderlos mejor.
+\subsection{Divide y venceras}
+El t\'ermino Divide y Vencer\'as en su acepci\'on m\'as amplia es algo m\'as que una
+t\'ecnica de dise~no de algoritmos. De hecho, suele ser considerada una filosof\'ia
+general para resolver problemas y de aqu\'i que su nombre no s\'olo forme parte del
+vocabulario inform\'atico, sino que tambi\'en se utiliza en muchos otros \'ambitos. \\
+En nuestro contexto, Divide y Vencer\'as es una t\'ecnica de diseño de algoritmos que consiste en resolver un problema a partir de la soluci\'on de subproblemas del mismo tipo, pero de menor tama~no. Si los subproblemas son
+todav\'ia relativamente grandes se aplicar\'a de nuevo esta t\'ecnica hasta alcanzar
+subproblemas lo suficientemente pequeños para ser solucionados directamente.
+Ello naturalmente sugiere el uso de la recursi\'on en las implementaciones de
+estos algoritmos. La resoluci\'on de un problema mediante esta t\'ecnica consta
+fundamentalmente de los siguientes pasos:
+\begin{itemize}
+    \item En primer lugar ha de plantearse el problema de forma que pueda ser
+descompuesto en k subproblemas del mismo tipo, pero de menor tamaño.
+Es decir, si el tama~no de la entrada es n, hemos de conseguir dividir el
+problema en k subproblemas (donde 1  k  n), cada uno con una
+entrada de tamaño nk y donde 0 < nk <n. A esta tarea se le conoce
+como divisi\'on.
+\item En segundo lugar han de resolverse independientemente todos los subproblemas,
+bien directamente si son elementales o bien de forma recursiva.
+El hecho de que el tama~no de los subproblemas sea estrictamente
+menor que el tama~no original del problema nos garantiza la convergencia
+hacia los casos elementales, tambi\'en denominados casos base.
+\item Por \'ultimo, combinar las soluciones obtenidas en el paso anterior para
+construir la soluci\'on del problema original.
+\end{itemize}
+\subsection{MergeSort}
+Dado un vector de enteros, lo que plantea es dividir el vector por la mitad e invocar
+al algoritmo para ordenar cada mitad por separado. Tras esta operaci\'on.
+s\'olo queda fusionar esos dos subvectores ordenados en uno s\'olo, tambien ordenado. \\\\
+Durante el proceso Mergesort, el vector a ordenar se divide en dos vectores. Para dividir el vector, Mergesort calcula la mitad del vector y genera dos nuevos vectores con las partes izquierda y derecha del vector original. Los vectores resultantes son divididos recursivamente hasta que cada vector resultante
+tenga solo un elemento. \\\\
+Desp\'ues de dividir los distintos vectores, el algoritmo comienza a juntar todos
+los vectores de la siguiente manera. Se coge el elemento inicial de cada vector
+una vez dividido y se selecciona el de menor valor, se contin\'uan con el resto
+de elementos hasta ordenar los elementos de los dos vectores. \\\\
+El tiempo de ejecuci\'on del algoritmo sera de orden  \theta(n log n).
+
+\subsection{QuickSort}
+El ordenamiento r\'apido (quicksort en ingles) es un algoritmo basado en la
+tecnica de divide y vencer\'as, que permite, en promedio, ordenar n elementos
+en un tiempo proporcional a n log n. Esta es la t\'ecnica de ordenamiento m\'as
+r\'apida conocida. Fue desarrollada por C. Antony R. Hoare en 1960. El algoritmo
+original es recursivo, pero se utilizan versiones iterativas para mejorar
+su rendimiento.
+El algoritmo fundamental es el siguiente:
+\begin{itemize}
+    \item Elegir un elemento de la lista de elementos a ordenar, al que llamaremos
+pivote.
+    \item Resituar los demas elementos de la lista a cada lado del pivote, de manera
+que a un lado queden todos los menores que el, y al otro los mayores. En este
+momento, el pivote ocupa exactamente el lugar que le correspondera en la lista
+ordenada.
+\item La lista queda separada en dos sublistas, una formada por los elementos a la
+izquierda del pivote, y otra por los elementos a su derecha.
+\item Repetir este proceso de forma recursiva para cada sublista mientras estas
+contengan mas de un elemento. Una vez terminado este proceso todos los elementos
+estar\'an ordenados. Como se puede suponer, la eficiencia del algoritmo
+depende de la posici\'on en la que termine el pivote elegido.
+\item En el mejor caso, el pivote termina en el centro de la lista, dividiendola en dos
+sublistas de igual tama~no. En este caso, el orden de complejidad del algoritmo
+es (nlog n).
+\item En el peor caso, el pivote termina en un extremo de la lista. El orden de
+complejidad del algoritmo es entonces de O($n^2$). El peor caso dependera de la
+implementacion del algoritmo, aunque habitualmente ocurre en listas que se
+encuentran ordenadas, o casi ordenadas.
+\end{itemize}
+\subsection{Algoritmo de multiplicación}
+Un algoritmo de multiplicación es un algoritmo (o método) para multiplicar dos números. Dependiendo del tamaño de los números, se utilizan diferentes algoritmos. Existen algoritmos de multiplicación eficientes desde la llegada del sistema decimal.
+\subsubsection{Algoritmo usual de la multiplicación}
+Este es el algoritmo habitual para multiplicar números más grandes a mano en la base 10. Las computadoras inicialmente utilizaron un algoritmo de cambio y suma muy similar en la base 2, pero los procesadores modernos han optimizado los circuitos para multiplicaciones rápidas utilizando algoritmos más eficientes, al precio de un algoritmo más complejo. realización de hardware. Una persona que haga una multiplicación larga en papel escribirá todos los productos y luego los agregará; un usuario de ábaco sumará los productos tan pronto como se calcule cada uno. [1]
+\subsubsection{Algoritmo de Karatsuba}
+El algoritmo Karatsuba es un algoritmo de multiplicación rápida que utiliza un enfoque de dividir y conquistar para multiplicar dos números. El algoritmo ingenuo para multiplicar dos números tiene un tiempo de ejecución de $\theta(n^2)$ mientras que este algoritmo tiene un tiempo de ejecución de $\theta(n^{1.58}$. Ser capaz de multiplicar números rápidamente es muy importante. Los informáticos a menudo consideran que la multiplicación es un tiempo constante $O(1)$ operación, y esta es una simplificación razonable para números más pequeños; pero para números más grandes, los tiempos de ejecución reales deben tenerse en cuenta, que es $O(n^2)$. El objetivo del algoritmo de Karatsuba es dividir números grandes en números más pequeños para que cualquier multiplicación que ocurra ocurra en números más pequeños. Karatsuba se puede usar para multiplicar números en todos los sistemas base (base-10, base-2, etc.).[2]\newline\newline
+Básicamente, Karatsuba afirmó que si tenemos que multiplicar dos números de n dígitos x e y, esto se puede hacer con las siguientes operaciones, suponiendo que B es la base de m y $m < n$ (por ejemplo: m = n / 2). Primero, ambos números x e y pueden representarse como $x_1$, $x_2$ e $y_1$, $y_2$ con la siguiente fórmula.
+\begin{center}
+    $x = x_1 * B^m + x_2$\\
+    $y = y_1 * B^m + y_2$
+\end{center}
+El producto $x*y$ se convierte en el siguiente producto
+\begin{center}
+    $xy = (x_1*B^m+x_2)(y_1*B^m+y_2)$\\
+    $xy = (x_1*y_1*B^{2m}) + (x_1*y_2*B^m) + x_2*y_2$
+\end{center}
+Aquí se puede observar que existen 4 sub-problemas (4 multiplicaciones a hacer, salidas de una multiplicación). Esto se puede reducir a 3 sub-problemas con lo siguiente.
+\begin{center}
+    Sea $a = x_1*y_1$, $b = x_1*y_2+x_2*y_1$ y $c=x_2*y_2$
+\end{center}
+Entonces $x*y$ se convierte en:
+\begin{center}
+    $xy = a*B^{2m} + b*B^m + c$
+\end{center}
+Karatsuba vino con una brillante idea para calcular b, y así la multiplicación se pudo reducir a un problema que se puede resolver con 3 subproblemas.
+\begin{center}
+    $b = (x_1+x_2)(y_1+y_2)-a-c$
+\end{center}
+El algoritmo Karatsuba es muy eficiente en tareas que invitan a la multiplicación de enteros. También puede ser útil para multiplicaciones polinómicas. Cabe señalar que existen algoritmos de multiplicación más rápidos.[3]
+\section{Experimentaci\'on y Resultados}
+\subsection{MergeSort}
+Como se presento en la secci\'on de conceptos el algoritmo llamado MergeSort nos sirve para ordenar los elementos de un arreglo. En esta secci\'on implementaremos el algoritmo mostrando su funcionamiento y como se comporta graficamente segun el tiempo que tarda en ordenar con cierto numero de elementos cada vez m\'as grandes.
+Para implementar este algoritmo usamos la tecnica de diseño de algoritmos llamada Divide y venceras. Se implementar\'an dos funciones una llamada Merge y otra MergeSort las cuales funcionan de manera conjunta para cumplir con el objetivo de este.
+\subsubsection{Pseudocodigo del Algoritmo Merge}
+A continuacion veremos el pseudocodigo de la funcion merge
+\begin{lstlisting}
+1-- Merge(A[0,...,n-1], P[0,...,m-1], q[0,...,o-1], r[0,...,c-1]):
+2--   	n1 = q - p + 1
+3--   	n2 = r- q
+4--   	L = [0] * (n1)
+5--   	R = [0] * (n2)
+6--   	for i in range(0 , n1):
+7--   		L[i] = A[p + i]
+8--   	for j in range(0 , n2):
+9--   		R[j] = A[q + 1 + j]
+10--   	i = 0
+11--   	j = 0
+12--   	k = p
+13--   	while i < n1 and j < n2 :
+14--   		if L[i] <= R[j]:
+15--   			A[k] = L[i]
+16--   			i += 1
+17--   		else:
+18--   			A[k] = R[j]
+19--   			j += 1
+20--   		k += 1
+21--   	while i < n1:
+22--   		A[k] = L[i]
+23--   		i += 1
+24--   		k += 1
+25--   	while j < n2:
+26--   		A[k] = R[j]
+27--   		j += 1
+28--   		k += 1
+\end{lstlisting}
+\subsubsection{Calculo de orden de complejidad algoritmo Merge}
+Calculando el orden de complejidad mediante el m\'etodo por bloques asi que dividiremos en pseudocodigo en 4 bloques.
+Las lineas 2 a 5 sera el primer bloque.
+Las lineas 6 a 9 segundo bloque.
+Las lineas 10 a 12 tercer bloque y las lineas restantes ser\'an el Cuarto bloque.
+A continuacion analizaremos por bloques mediante el metodo divide y venceras.
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Bloque & Costo\\
+\hline
+$B_{1}$ &$\Theta_{(1)}$\\
+\hline
+$B_{2}$ &$\Theta_{(n1+1+n2+1)}=\Theta_{(q-p+1+1+r-q+1)}=\Theta_{(r-p+1+2)}=\Theta_{(n+2)}=\Theta_{(n)}$\\
+\hline
+$B_{3}$ &$\Theta_{(1)}$\\
+\hline
+$B_{4}$ &$\Theta_{(n1+1+n2+1)}=\Theta_{(q-p+1+1+r-q+1)}=\Theta_{(r-p+1+2)}=\Theta_{(n+2)}=\Theta_{(n)}$\\
+\hline
+\end{tabular}
+\end{center}
+Ahora, sabiendo esto, procedemos a concluir que $T_{(n)}$ está constituida por la suma de las anteriores $\Theta_{(n)}'s$.
+$T_{(n)}=\Theta_{(1)}+\Theta_{(n)}+\Theta_{(1)}+\Theta_{(n)}$
+$\therefore T_{(n)}\in\Theta_{(n)}$
+Asi concluimos que el algoritmo Merge tienen complejidad Lineal
+\subsubsection{Graficas de algoritmo Merge}
+A continuacion mostraremos graficamente el comportamiento al momento de ejecutar el Algoritmo Merge.
+Comenzamos por hacer pruebas con diferentes tamaños del arreglo, iniciamos con un arreglo de 400 numeros la figura 1 nos muestra la grafica que se form\'o al ejecutarse el algoritmo y la figura 2 el tiempo que tard\'o en ordenar desde tamaño 1 hasta tamaño 400.
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/M400g.png}\\
+    Figura 1. Gr\'afica con arreglo de tamaño 400.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/M400t.png}\\
+    Figura 2. Tiempo de ejecuci\'on con arreglo de tamaño 400.
+\end{center}
+Como podemos observar en la figura 1 no tenemos mucha informacion para determinar como es la forma de la gr\'afica, debido a esto aumentaremos el tamaño del arreglo para ver como se comporta y si podemos conocer un poco m\'as la forma que esta tendr\'a.
+Aumentamos el tamaño del arreglo a 4000 y el resultado de este se muestra en la figura 3 y en la figura 4 el tiempo que tard\'o en ejecutarse.
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/M4000g.png}\\
+    Figura 3. Gr\'afica con arreglo de tamaño 4000.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/M4000t.png}\\
+    Figura 4. Tiempo de ejecuci\'on con arreglo de tamaño 4000.
+\end{center}
+Con este segundo experimento podemos observar que ya la grafica va teniendo un mejor comportamiento y tomando una forma lineal asi que ahora buscaremos una funcion f(n) que acote por arriba nuestra grafica.
+Debemos buscar una funci\'on lineal que acote de manera correcta nuestra grafica, la cual nos qued\'o de la siguiente forma:
+\begin{center}
+    $f(n) = \frac{1}{108000}{n}$
+\end{center}
+En la figura 5 se muestra la grafica con un arreglo de 5,700 y la función que la acota por arriba. En la figura 6 se muestra el tiempo que tard\'o en realizar este proceso con esa cantidad.
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/M5700ga.PNG}\\
+    Figura 5. Gr\'afica con arreglo de tamaño 5700 acotada por f(n).
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/M5700ta.PNG}\\
+    Figura 6. Tiempo de ejecuci\'on con arreglo de tamaño 5700 acotado por f(n).
+\end{center}
+Como podemos ver en la figura nuestra f(n) acota por arriba nuestra grafica gracias a esto comprobamos que el algoritmo Merge tiene complejidad lineal
+\subsubsection{Pseudocodigo del Algoritmo MergeSort}
+Mostraremos el algoritmo MergeSort representado en pseudocodigo
+\begin{lstlisting}
+1-- MergeSort(A[0,...,n-1],p[0,...,m-1],r[0,...,o-1]):
+
+2--    global acum
+3--    if p < r:
+4--    	q = int((p+(r-1))/2)
+5--    	MergeSort(A, p, q)
+6--    	MergeSort(A, q+1, r)
+7--    	Merge(A, p, q, r)
+\end{lstlisting}
+\subsubsection{Calculo de orden de complejidad algoritmo MergeSort}
+A continuaci\'on calcularemos formalmente el orden de complejidad del algortimo MergeSort.
+Nuevamente, nos ayudaremos del método ``Divide y vencerás":\\
+Dado un arreglo de tamaño `n', este paradigma divide el arreglo en `a" bloques, cada uno de tamaño $\frac{n}{b}$, resuelve bloques de tamaño $\frac{n}{b}$ recursivamente hasta obtener arreglos suficientemente pequeños cuyo orden de complejidad es constante. Posteriormente combina los casos para encontrar la solución original. Sea $C_{n}$ la complejidad que consiste en combinar los datos y $D_{n}$ la complejidad en dividir los datos, entonces concluimos:\\ \\
+$$
+T_{(n)}=\begin{cases}
+\Theta_{(n)},
+& \mbox{para n suficientemente pequeños}\\
+aT_{(\frac{n}{b})}+D_{n}+C_{n}, & \mbox{en otro caso}
+\end{cases}
+$$
+$$
+\therefore T_{(n)}=\begin{cases}
+C,
+& \mbox{si n=1}\\
+2T_{(\frac{n}{2})}+\Theta_{(1)}+\Theta_{(n)}, & \mbox{si n>1}
+\end{cases}
+$$
+$$
+\therefore T_{(n)}=\begin{cases}
+C,
+& \mbox{si n=1}\\
+2T_{(\frac{n}{2})+Cn}, & \mbox{si n>1}
+\end{cases}
+$$
+\\
+Sea $n=2^{k} (k=\log n)$
+$T_{(2^{k})}=2T_{(2^{k-1})}+C2^{k}$ \\
+$T_{(2^{k})}=2[2T_{(2^{k-2})}+C2^{k-1}]+C2^{k}$\\
+$T_{(2^{k})}=2^{2}T_{(2^{k-2})}+2C2^{k}$\\
+$T_{(2^{k})}=2^{2}[2T_{(2^{k-3})}+C2^{k-2}]+2C2^{k}$\\
+$T_{(2^{k})}=2^{3}T_{(2^{k-3})}+3C2^{k}$\\
+$T_{(2^{k})}=2^{i}T_{(2^{k-i})}+iC2^{k}$\\
+Para $k-i=0$, $i=k$\\
+$T_{(2^{k})}=2^{k}T_{(1)}+kC2^{k}$\\
+$T_{(2^{k})}=2^{k}C+kC2^{k}$\\
+$T_{(2^{k})}=C2^{k}C(1+k)=Cn(1+\log n)$\\
+Asi concluimos que formalmente que \newline
+$\therefore Merge Sort\in \Theta_{(n \log n)}$\\
+\subsubsection{Graficas de algoritmo MergeSort}
+En esta secci\'on procederemos a realizar experimentos con nuestro algoritmo para observar como es que se comporta graficamente.
+Nuestro primer experimento fue con un arreglo de tamaño 80 es decir 80 numeros que debe ordenar. En la figura 7 podemos observar el resultado obtenido de su grafica y en la figura 8 el tiempo que tardo en ordenar esta cantidad de numeros.
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/MS80g.PNG}\\
+    Figura 7. Gr\'afica con arreglo de tamaño 80.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/MS80t.PNG}\\
+    Figura 8. Tiempo de ejecuci\'on con arreglo de tamaño 80.
+\end{center}
+Con este experimento no obtenemos informacion necesaria de que forma tomara nuestra grafica asi que continuaremos aumentando la cantidad de nuestro arreglo a 800 viendo los resultados de la grafica en la figura 9 y del tiempo en la figura 10.
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/MS800g.PNG}\\
+    Figura 9. Gr\'afica con arreglo de tamaño 800.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/MS800t.PNG}\\
+    Figura 10. Tiempo de ejecuci\'on con arreglo de tamaño 800.
+\end{center}
+Aun no es del todo claro la forma que esta tomando nuestra grafica asi que realizaremos otro experimento con un arreglo de tamaño 8000 viendo los resultados de la grafica en la figura 11 y del tiempo en la figura 12.
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/MS8000g.PNG}\\
+    Figura 11. Gr\'afica con arreglo de tamaño 8000.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/MS8000t.PNG}\\
+    Figura 12. Tiempo de ejecuci\'on con arreglo de tamaño 8000.
+\end{center}
+Con esta cantidad de elementos se va mostrando un poco mejor el comportamiento que va a ir tomando asi que procederemos a buscar una funcion la cual acote por arriba nuestra gr\'afica.
+Realizando pruebas y variando los valores encontramos una funcion que acota de manera correcta, la cual qued\'o de la siguiente forma:
+\begin{center}
+    $f(n) = \frac{n}{150000}log_2(n)$
+\end{center}
+En la figura 13 podemos observar un arreglo de 10,000 y como nuestra funci\'on propuesta acota de manera correcta nuestra grafica. En la figura 14 podemos observar el tiempo que tard\'o en finalizar este proceso.
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/MS10000ga.PNG}\\
+    Figura 13. Gr\'afica con arreglo de tamaño 10000 acotada por f(n).
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{MergeSort/MS10000ta.PNG}\\
+    Figura 14. Tiempo de ejecuci\'on con arreglo de tamaño 10000 acotada por f(n).
+\end{center}
+Llegando asi a la conclusi\'on que el Algoritmo $ Merge Sort\in \Theta_{(n \log n)}$\\
+comprobado graficamicamente.
+\subsection{QuickSort}
+Otro algoritmo de ordenamiento que veremos a continuacion es el llamado QuickSort este se compone de dos funciones una llamada Partition y la segunda QuickSort, mostraremos ambas en forma de pseudocodigo.
+\subsubsection{Pseudocodigo del Algoritmo Partition}
+\begin{lstlisting}
+1-- Partition(A[0,...,n-1],inf[0,...,m-1],sup[0,...,o-1],piv[0,...,c-1]):
+2--	A[piv], A[sup]=A[sup],A[piv]
+3--	aux=inf
+4--	for i in range(inf,sup):
+5--		if A[i]<A[sup]:
+6--			A[i],A[aux]=A[aux], A[i]
+7--			aux+=1
+8--	A[aux], A[sup]=A[sup],A[aux]
+10--	return aux
+\end{lstlisting}
+\subsubsection{Orden de complejidad algoritmo Partition}
+Obtenido nuestro Pseudocodigo procederemos a calcular el orden de complejidad de este algoritmo, continuaremos por dividirlo por bloques para realizar su an\'alisis.
+La linea 2 y 3 compondran el primer bloque el cual tiene un orden $\Theta_{(1)}$. Las lineas 2 4 a 7 serán el bloque 2 y las restantes el bloque 3 que de igual manera que el bloque 1 tienen un orden $\Theta_{(1)}$
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Bloque & Costo\\
+\hline
+$B_{1}$ &$\Theta_{(1)}$\\
+\hline
+$B_{2}$ &$\Theta_{(n)}$\\
+\hline
+$B_{3}$ &$\Theta_{(1)}$\\
+\hline
+\end{tabular}
+\end{center}
+Ahora, sabiendo esto, procedemos a concluir que $T_{(n)}$ está constituida por la suma de las anteriores $\Theta_{(n)}'s$.
+$T_{(n)}=\Theta_{(1)}+\Theta_{(n)}+\Theta_{(1)}$
+$\therefore T_{(n)}\in\Theta_{(n)}$
+As\'i concluimos analiticamente que el algoritmo Partition tiene un orden de complejidad Lineal.
+
+\subsubsection{Graficas del algoritmo partition}
+A continuacion comenzaremos a mostrar graficamente como es que se comporta este algoritmo para asi poder encontrar una funcion que acote nuestras graficas para encontrar su orden de complejidad demostrandolo graficamente. Comenzamos realizando experimentos variando el valor del tamaño con el que va a trabajar este algoritmo, comenzamos con un valor de 50 mostrando sus resultados en la grafica de la figura 15 y su tiempo que tardo en ejecutarse en la figura 16.
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/p1.png}\\
+    Figura 15. Gr\'afica con arreglo de tamaño 50.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/p2.png}\\
+    Figura 16. Tiempo de ejecuci\'on con arreglo de tamaño 50.
+\end{center}
+Esta primer grafica mostrada no nos brinda la informacion suficiente de como será el comportamiento de nuestra grafica asi que vamos a continuar variando el tamaño del arreglo para poder observar más como será la grafica, ahora cambiaremos el valor a 100 mostrando los resultados en la figura 17 que es nuestra grafica obtenda y figura 18 que muestra el tiempo que tardo en ejecutarse.
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/p3.png}\\
+    Figura 17. Gr\'afica con arreglo de tamaño 100).
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/p4.png}\\
+    Figura 18. Tiempo de ejecuci\'on con arreglo de tamaño 100.
+\end{center}
+Como tercer experimento introducimos un arreglo de tamaño 500 y observamos que la grafica va tomando una forma lineal como se muestra en la figura 19 y en la figura 20 el tiempo que tardo en ejecutarse.
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/p5.png}\\
+    Figura 19. Gr\'afica con arreglo de tamaño 500.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/p6.png}\\
+    Figura 20. Tiempo de ejecuci\'on con arreglo de tamaño 500.
+\end{center}
+Lo siguiente es encontrar una funci\'on que acote nuestra grafica y nos determine el orden de complejidad de este algoritmo todo basado en graficas que hemos mostrado. La funci\'on obtenida nos queda de la siguiente manera:
+\begin{center}
+    $f(n) = \frac{1}{350000}n$
+\end{center}
+En la figura 21 mostramos como nuestra f(n) obtenida acota de manera correcta la grafica obtenida de un arreglo el cual tiene el valor de 500 y en la 22 el tiempo que tard\'o en realizarse.
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/p7.png}\\
+    Figura 21. Gr\'afica con arreglo de tamaño 500 acotada por f(n).
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/p8.png}\\
+    Figura 22. Tiempo de ejecuci\'on con arreglo de tamaño 500 acotada por f(n).
+\end{center}
+Concluyendo asi que graficamente el algoritmo Partition tiene complejidad de orden Lineal $\theta{(n)}$
+\subsubsection{Pseudocodigo del Algoritmo QuickSort}
+\begin{lstlisting}
+1-- QuickSort(A[0,...,n-1], inf[0,...,m-1], sup[0,...,o-1]):
+2--	if inf<sup:
+3--		piv=randrange(inf,sup+1)
+4--		pivf=Partition(A,inf,sup,piv)
+5--		QuickSort(A,inf, pivf-1)
+6--		QuickSort(A,pivf+1,sup)
+\end{lstlisting}
+\subsubsection{Orden de complejidad del Algoritmo QuickSort}
+Ya obtenido nuestro pseudocodigo procederemos a determinar el orden de complejidad de este algoritmo. Para determinar el orden suponemos que partition divide el arreglo en dos subarreglos de igual tamaño, en tal caso nos queda nuestra funcion de recurrencia de la siguiente manera:
+
+$T_{(n)}=2T(\frac{n}{2})+{n}$\\
+Resolviendo mediante Teorema Maestro \\
+$a=2; b=2; f(n)= n$\\
+$n^{log_b(a)} = n^{log_2(2)} = n^{1}$\\
+Obtenemos $c=1$ y \\
+Se cumple la condicion 2 del teorema\\
+$c= {log_b(a)}$\\
+Por el segundo caso del Teorema maestro:\\
+$T(n)= \theta(n^{log_b(a)} log^{k+1} n  = n^1 + log^1 + n$\\
+$T(n)= \theta(n^{log(n)})$
+
+
+
+\subsubsection{Graficas del algoritmo QuickSort}
+Para poder determinar graficamente el orden de complejidad debemos ir variando nuestro valor del arreglo para observar como varia la grafica. Comenzaremos con un valor de 50 en nuestro  arreglo para observar su comportamiento (Figura 23) y tiempo de respuesta (Figura 24).
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/q1.png}\\
+    Figura 23. Gr\'afica con arreglo de tamaño 50.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/q2.png}\\
+    Figura 24. Tiempo de ejecuci\'on con arreglo de tamaño 50.
+\end{center}
+Nuestro segundo experimento será variar el valor del arreglo a 250 y observar como se comporta la grafica de la figura 25 y el tiempo en que este se ejecuta (figura 26).
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/q3.png}\\
+    Figura 25. Gr\'afica con arreglo de tamaño 250.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/q4.png}\\
+    Figura 26. Tiempo de ejecuci\'on con arreglo de tamaño 250.
+\end{center}
+Esta grafica comienza a tomar forma pero no nos da la suficiente informacion de como se comportar\'a por esto aumentaremos el valor del arreglo hasta 1400 para observarla más detalladamente.
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/q5.png}\\
+    Figura 27. Gr\'afica con arreglo de tamaño 1400.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/q6.png}\\
+    Figura 28. Tiempo de ejecuci\'on con arreglo de tamaño 1400.
+\end{center}
+Lo siguiente que debemos hacer es buscar una funcion que acote nuestra grafica y con el fin de determinar el orden de complejidad que tiene este algoritmo. Despues de varios experimentos con diferentes funciones determinamos que la funcion que acotara esta grafica es:
+\begin{center}
+    $f(n) = \frac{n}{950000}log_2(n)$
+\end{center}
+En la figura 28 se muestra como nuestra funcion propuesta acota correctamente nuestra grafica determinando asi que eel oden de complejidad de el algoritmo QuickSort es
+$ QuickSort\in \Theta_{(n \log n)}$
+
+\subsubsection{Orden de complejidad QuickSort en forma decreciente}
+En esta seccion determinaremos graficamente cual es el orden de complejidad del algoritmo anterior pero ahora con la variante que todos los elementos del arreglo deben ser distintos y ordenados de forma decreciente.
+Comenzaremos por hacer una funcion que genera la lista de elementos para que lo haga de forma decreciente y nos queda de la siguiente manera:
+\begin{lstlisting}
+	def crearListaDecreciente(n):
+	    return [i for i in range(n)][::-1]
+\end{lstlisting}
+A continuacion comenzaremos a realizar experimentos para llegar a la grafica que nos ayude a determinar el orden de complejidad que toma.
+Iniciamos con una prueba de 50 elementos la cual se muestra en la figura 29 y en la figura 30 el tiempo que tarda en ordenarlos si estan de manera decreciente.
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/qo1.png}\\
+    Figura 29. Gr\'afica con arreglo decreciente de tamaño 50.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/qo2.png}\\
+    Figura 30. Tiempo de ejecuci\'on con arreglo decreciente de tamaño 50.
+\end{center}
+Ahora bien incrementaremos el valor de los elementos a 250 para observar como cambia con esta diferencia de valores, mostrando los resultados en las figuras 31 y 32.
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/qo3.png}\\
+    Figura 31. Gr\'afica con arreglo decreciente de tamaño 250.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/qo4.png}\\
+    Figura 32. Tiempo de ejecuci\'on con arreglo decreciente de tamaño 250.
+\end{center}
+Nuesrta grafica comienza a ser m\'as clara asi que seguiremos experimentando, cambiaremos el valor a 1000 y observaremos como la grafica se hace mas pequeña y nos permite darnos una idea de como puede ser la funci\'on con la que la acotaremos.
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/qo5.png}\\
+    Figura 33. Gr\'afica con arreglo decreciente de tamaño 1000.
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/qo6.png}\\
+    Figura 34. Tiempo de ejecuci\'on con arreglo decreciente de tamaño 1000.
+\end{center}
+Segun lo observado en las gr\'aficas concluimos que la funcion que acota la grafica generada con 3000 valores es de la forma:
+\begin{center}
+    $f(n) = \frac{n}{1900000}log_2(n)$
+\end{center}
+En la figura 35 se muestra como la funcion propuesta acota correctamente la grafica demostrando asi que el orden de complejidad del algoritmo QuickSort con sus elementos ordenados decrecientemente es de orden  $\Theta_{(n \log n)}$
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/qo9.png}\\
+    Figura 35. Gr\'afica con arreglo decreciente de tamaño 3000 acotada por f(n).
+\end{center}
+\begin{center}
+    \includegraphics[width = 9.5cm]{QuickSort/qo10.png}\\
+    Figura 36. Tiempo de ejecuci\'on con arreglo decreciente de tamaño 3000 acotada por f(n).
+\end{center}
+\subsection{Multipliación de dos números muy grandes}
+Esta última parte de la práctica consiste en implementar dos algoritmos que nos permiten hacer la multiplicación de dos números dados grandes. El primer algoritmo de ellos es el algoritmo usual que se usa para multiplicar dos números, mientras que el otro algoritmo se trata del algoritmo de Karatsuba, algoritmo muy popular para realizar multiplicaciones, ya que este tiene un orden de complejidad menor a $0(n^2)$.
+
+\subsubsection{Pseudocódigo del algoritmo usual de la multiplicación}
+Ahora veremos el pseudocódigo del algoritmo usual de la multiplicación, el cual calcula multiplicaciones para números muy grandes, uno de tamaño $n$, mientras que el otro puede ser del mismo tamaño o de un tamaño $m$.
+\begin{lstlisting}
+multiplicacion(A[0,...,n-1], B[0,...,m-1])
+1-- p = 1
+2-- c = 0
+3-- for (int i = n-1; i >= 0; i--)
+4--     s = 0
+5--     q = 1
+6--     for (int j = m-1; j >= 0; j--)
+7--         s += A[i] * B[j] * q
+8--         q *= 10
+9--     s *= p
+10--    c += s
+11--    p *= 10
+12-- return c
+\end{lstlisting}
+\begin{center}
+    Algoritmo 5 - Algoritmo de la multiplicación.
+\end{center}
+
+
+\subsubsection{Análisis a priori del algoritmo usual de la multiplicación}
+Analizando por bloques el algoritmo usual de la multiplicación observamos que el bloque de la línea 1,2 y 12 tienen complejidad $\theta(1)$, mientras que la línea 3 tiene una complejidad de $\theta(n)$, dentro de este bloque donde se encuentra el ciclo $for$, observamos que las líneas 4,5,9,10,11 tienen complejidad $\theta(1)$, en la línea 6 observamos otro ciclo, cuya complejidad es $\theta(m)$ y finalmente las líneas dentro de este ciclo 7 y 8 tienen una complejidad de $\theta(1)$.\newline\newline
+Así bien,
+\begin{center}
+    $multiplicacion \in \theta(1 + n*(1 + m*(1))$\newline
+    $\therefore multiplicacion \in \theta(nm)$
+\end{center}
+O sí bien tenemos que $n = m$, se tiene que,
+\begin{center}
+    $multiplicacion \in \theta(n^2)$
+\end{center}
+
+\subsubsection{Análisis a posteriori del algoritmo usual de la multiplicación}
+Esta siguiente subsección tiene el propósito de mostrar las gráficas obtenidas experimentando con los diversos escenarios que se propusieron para ir observando el orden de complejidad que el algoritmo usual de la multiplicación toma cuando ya se lleva a la práctica.\newline\newline
+Así bien, nuestro primer experimento fue meterle pocos datos al programa realizado para obtener los tiempos de ejecución de este algoritmo, esto con el fin de probar si el programa no tenía errores y ver como se va comportando el algoritmo poco a poco. El programa fue recopilando los tiempos de ejecución del algoritmo convencional de la multiplicación, para números de diversos tamaños. La primer prueba consistió en llegar hasta números de tamaño 10. En la figura 37 se muestra la forma que nuestra gráfica fue tomando con estos pocos datos y en la figura 38, se muestra el resultado en consola de los tiempos exactos con los números de diversos tamaños que se fueron dando.
+\begin{center}
+    \includegraphics[width = 12cm]{multiplicacion/m1.png}\\
+    Figura 37 - Gráfica de multiplicación usual con números de hasta tamaño 10.
+\end{center}
+\begin{center}
+    \includegraphics[width = 12cm]{multiplicacion/m2.png}\\
+    Figura 38 - Resultado en consola de multiplicación usual con números de hasta tamaño 10.
+\end{center}
+En el primer experimento no nos dice mucho de como es la forma de la gráfica de el algoritmo de la multiplicación usual, pero vamos viendo que esta va incrementando conforme mayor es el tamaño de los números que va calculando su multiplicación. Posteriormente incrementamos el tamaño de nuestros números hasta un tamaño donde se pudieron tener una multiplicación entre números de tamaño 100. La figura 39 nos muestra una gráfica más concisa que la de la figura 37, y vamos viendo un poco más como esta gráfica se va comportando como si de una cuadrática se tratase. La figura 40 muestra el resultado en consola de lo que mostró el programa para este caso con números de hasta tamaño de 100.
+\begin{center}
+    \includegraphics[width = 12cm]{multiplicacion/m3.png}\\
+    Figura 39 - Gráfica de multiplicación usual con números de hasta tamaño 100.
+\end{center}
+\begin{center}
+    \includegraphics[width = 10cm]{multiplicacion/m4.png}\\
+    Figura 40 - Resultado en consola de multiplicación usual con números de hasta. tamaño 100.
+\end{center}
+Por último, de la parte de experimentación, se metieron números que podían tomar hasta tamaños de 500, con esto, se pudo ver más claramente, como se muestra en la figura 41, que nuestra gráfica tiene la forma de $n^2$. De igual forma la figura 42 muestra el resultado que se obtuvo en consola.
+\begin{center}
+    \includegraphics[width = 10.5cm]{multiplicacion/m5.png}\\
+    Figura 41 - Gráfica de multiplicación usual con números de hasta tamaño 500.
+\end{center}
+\begin{center}
+    \includegraphics[width = 8.5cm]{multiplicacion/m6.png}\\
+    Figura 42 - Resultado en consola de multiplicación usual con números de hasta tamaño 500.
+\end{center}
+Con estos datos, ahora pasamos a acotar estas gráficas, volviendo a ejecutar el programa y ahora graficando al mismo tiempo una función de la forma:
+\begin{center}
+    $f(n) = \frac{n^2}{1000000}$
+\end{center}
+que nos permitió acotar de manera correcta las gráficas que se van obteniendo. Este resultado se muestra en la figura 43 y en la figura 44 observamos el resultado en consola, muy similar al de la figura 42.
+\begin{center}
+    \includegraphics[width = 9.5cm]{multiplicacion/m7.png}\\
+    Figura 43 - Gráfica de multiplicación usual con números de hasta tamaño 500 acotada por $f(n)$.
+\end{center}
+\begin{center}
+    \includegraphics[width = 8cm]{multiplicacion/m8.png}\\
+    Figura 44 - Resultado en consola de multiplicación usual con números de hasta tamaño 500.
+\end{center}
+
+\subsubsection{Pseudocódigo del algoritmo de Karatsuba}
+A continuación, se mostrará el algoritmo de Karatsuba, algoritmo que usa recursividad para poder bajar el orden de complejidad del algortimo usual de la multipliación.
+\begin{lstlisting}
+karatsuba(A[0,...,n-1], B[0,...,m-1])
+1-- if n-1 == 1 or m-1 == 1
+2--     return int(A)*int(B)
+3-- else
+4--     m = max(n-1, m-1)
+5--     m2 = floorDivision(m, 2)
+6--     a1 = floorDivision(int(a), pow(10,m2))
+7--     b1 = int(a) % pow(10,m2)
+8--     c1 = floorDivision(int(b), pow(10,m2))
+9--     d1 = int(b) % pow(10,m2)
+10--    z0 = karatsuba(str(b1), str(d1))
+11--    z1 = karatsuba(str(a1+b1), str(c1+d1))
+12--    z2 = karatsuba(str(a1), str(c1))
+13--    return (z2*pow(10,2*m2)
+            + ((z1 - z2 - z0)*pow(10,m2)) + z0
+\end{lstlisting}
+\begin{center}
+    Algoritmo 6 - Algoritmo de Karatsuba.
+\end{center}
+
+\subsubsection{Análisis a priori del algoritmo de Karatsuba}
+Calcularemos el orden de complejidad de este algoritmo también mediante bloques, observamos que tiene recursividad. Primeramente, observamos que de la línea 1 a la 9, y también la 13 tienen orden de complejidad de $\theta(1)$, las líneas 10,11 y 12 vemos que tienen un orden de complejidad de $T(\frac{n}{2})$, dado que se divide el tamaño a la mitad. Por lo tanto podemos decir que nuestra ecuación de recursión tiene la forma de:
+\begin{center}
+    $T(n) = 4T(\frac{n}{2}) + \theta(n)$
+\end{center}
+Resolviendo esta recursión mediante el teorema maestro, se tiene que, \newline\newline
+    $a = 3$, $b = 2$, $f(n) = n$\newline
+    $=> n^{\log_b a} = n^{log_2 3} = n^{1.58}$\newline
+    $=> f(n) = \theta(n) = \theta(n^{\log_b a - \epsilon})$
+\begin{center}
+    $\therefore T(n) = \theta(n^{1.58})$
+\end{center}
+
+\subsubsection{Análisis a posteriori del algoritmo de Karatsuba}
+Primeramente al igual que el algoritmo de la multiplicación, iniciamos ingresandole números de tamaño relativamente pequeño al algoritmo de karatsuba. Nuestra primer pruba fue con números de hasta tamaño 10, la gráfica mostrada en la figura 45 no nos dice mucho al tener muy pocos datos, pero vamos observando que esta se va incrementando a medida que incrementan el tamaño de los números. La figura 46 muestra el resultado en consola de esta primer prueba.
+\begin{center}
+    \includegraphics[width = 8.8cm]{multiplicacion/k1.png}\\
+    Figura 45 - Gráfica del Karatsuba con números de hasta tamaño 10.
+\end{center}
+\begin{center}
+    \includegraphics[width = 7.8cm]{multiplicacion/k2.png}\\
+    Figura 46 - Resultado en consola del Karatsuba con números de hasta tamaño 10.
+\end{center}
+Seguidamente ingresamos un mayor tamaño a los números en este segundo experimento, y ahora fueron números de hasta tamaño 100, la figura 47 nos muestra como la gráfica va tomando forma de un $n^a$, donde $1 < a < 2$. La figura 48 muestra el resultado en consola.
+\begin{center}
+    \includegraphics[width = 11cm]{multiplicacion/k3.png}\\
+    Figura 47 - Gráfica del Karatsuba con números de hasta tamaño 100.
+\end{center}
+\begin{center}
+    \includegraphics[width = 8.5cm]{multiplicacion/k4.png}\\
+    Figura 48 - Resultado en consola del Karatsuba con números de hasta tamaño 100.
+\end{center}
+Después hicimos una prueba con números de hasta tamaño $500$ y claramente, como se muestra en la figura 49, vemos como este algoritmo va tomando un orden de complejidad entre una lineal y una cuadrática, ahora se va afirmando más que tiene un orden de complejidad de $n^a$ donde $1 < a < 2$. En la figura 50 observamos los resultados en consola de este experimento.
+\begin{center}
+    \includegraphics[width = 10.5cm]{multiplicacion/k5.png}\\
+    Figura 49 - Gráfica del Karatsuba con números de hasta tamaño 500.
+\end{center}
+\begin{center}
+    \includegraphics[width = 8.5cm]{multiplicacion/k6.png}\\
+    Figura 50 - Resultado en consola del Karatsuba con números de hasta tamaño 500.
+\end{center}
+Ya por último, acotamos estos resultados, acorde al análisis a priorio nos dió y vemos que con una función de la forma:
+\begin{center}
+    $f(n) = \frac{n^{1.58}}{150000}$
+\end{center}
+Podemos acotar de manera correcta los resultados que se obtienen con números de tamaño de hasta 500. Esto lo observamos en la figura 51 y en la figura 52 observamos los resultados que se dan en consola.
+\begin{center}
+    \includegraphics[width = 9cm]{multiplicacion/k7.png}\\
+    Figura 51 - Gráfica del Karatsuba con números de hasta tamaño 500 acotada por $f(n)$.
+\end{center}
+\begin{center}
+    \includegraphics[width = 7.5cm]{multiplicacion/k8.png}\\
+    Figura 52 - Resultado en consola del Karatsuba con números de hasta tamaño 500.
+\end{center}
+
+\section{Conclusiones}
+Eduardo Mendoza Martínez\newline
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \begin{center}
+    \includegraphics[width=6cm\textwidth]{ed.png}
+  \end{center}
+
+\end{wrapfigure}
+Al término de esta práctica pudimos llegar a la conclusión de la importancia del "Divide y vencerás", si bien, esto ya lo veníamos estudiando desde que ingresamos a ESCOM en la materia de "Algoritmia y programación" y también, se estudiaron muchos algoritmos basados en este paradigma en la asignatura de "Estructura de datos", puesto que muchas de las estructuras que usabamos requerían recursividad, en esta práctica pudimos implementar y experimentar con otro tipo de algoritmos, como lo fue el algoritmo de Karatsuba usado para multiplicar dos números, que fue con el que trabajé más en esta práctica. Como se comentaba en la clase, por mucho tiempo se tuvo el pensamiento que el algoritmo de la multiplicación tenía una $\Omega(n^2)$ y que por nada se podía bajar a un orden más pequeño, sin embargo, es interesante observar como acomodando las cosas (o los procedimientos en este caso) podemos llegar a resultados favorables. Y es de lo que se trata todo esto de este algoritmo, del dividir a favor tuya y vencer una vez teniendo todos esos subproblemas resueltos. También es de mencionar, que fue notorio el cambio en las gráficas que se fueron implementando, mientras que en el algoritmo usual de la multiplicación se veía claramente el comportamiento cuadrático del orden de complejidad, en el algoritmo de Karatsuba podíamos ver un comportamiento más lineal, pero que también se notaba ir creciendo cuadráticamente, fue un efecto muy particular, ya que es la primera vez que se trabaja con un algoritmo que tiene un orden de complejidad de $O(n^a)$ donde $1 < a < 2$. Por último, básicamente este paradigma de "Divide y vencerás" puede ser implementando en cualquier área que se requiera, y hasta en la vida cotidiana, como se sabe, esto viene de épocas antiguas, de igual forma en prácticas pasadas hemos visto que muchas de las veces una computadora resolverá un problema de manera más eficiente, aunque el procedimiento parezca ser más largo.
+\newline \newline \newline \newline
+Daniel Aguilar Gonzalez\newline
+
+En esta practica calculamos la complejidad de 3 algoritmos, 2 nos sirven para ordenar un elemento de arreglos y uno para multiplicaciones de numeros muy grandes, estos 3 algoritmos fueron analizados con la aplicaci\'on de la tecnica de programacion llamada "Divide y venceras" la cual consiste en descomponer el problema inicial en varios subproblemas del mismo tipo.
+Ejemlo de esto es que en los algoritmos quick  y mergeSort se debian implementar 2 funciones m\'as las cuales funcionan de manera simultanea con las principales y asi hacer mas facil la resolucion del problema.
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \begin{center}
+    \includegraphics[width=6cm\textwidth]{dan.png}
+\end{center}
+\end{wrapfigure}
+Como hemos visto hasta ahora en las practicas anteriores el tamaño de lineas de codigo no determina la eficiencia de este, en esta practica se mostraron 2 algoritmos que sirven para lo mismo pero cada uno de ellos es completamente diferente, desde su implementaci\'on, lineas de codigo, etc.
+La metodologia \Divide y venceras" se ve involucrada nuevamente tanto en la realizacion del algoritmo (pseudo y codigo), como para resolver su complejidad algoritmica.Sin importar las condiciones a las que se sometio este algoritmo, el tempo casi siempre era el mismo, lo que puede verse como una ventaja o desventaja.
+Debido a esta tecnica me nos dimos cuenta que un algoritmo puede estar implementado por mas de un subalgoritmo y cada uno de estos puede desempeñar funciones diferentes para despues solo juntarlos y asi dar solucion al objetivo del algoritmo principal inclusive a que cada subsalgoritmo puede tener orden de complejidad completamente diferentes, como se vio
+los algoritmos quick se compone de otro mas llamado partition y mergeSort el algoritmo merge los cuales desempeñan funciones diferentes a los principales pero todos trabajan en conjunto para cumplir los objetivos principales de ambos.
+\section{Anexo}
+En esta sección veremos algunos problemas anexos complementarios de los algoritmos vistos en la práctica. Cabe mencionar que todos los siguientes problemas fueron implementados en Python 3.
+\subsection{Valor que retorna Partition cuando todos los elementos de un arreglo tienen el mismo valor}
+Para este problema crearemos arreglos de n elementos donde cada elemento tendrá el mismo valor y debemos observar como cambia el valor del pivote.
+Creamos una funcion que sea capaz de retornar el mismo elemento para arreglos de n elementos utilizaremos la misma funcion que en el siguiente inciso cambiando solamente el valor del elemento.
+\begin{lstlisting}
+def crearListaMismosElementos(n):
+	return [6 for i in range(n)]
+\end{lstlisting}
+A continuacion comenzamos a realizar las pruebas para 199 elementos y nos damos cuenta que el valor que retorna el pivote va de 0 hasta n-1 incrementando de 1 en 1.
+La primer prueba que se realizo fue con un arreglo de 199 elementos donde se observa que pivote inicia en tiempo 0 y finaliza en 198, el tiempo en ejecutarse como se
+muestra en la figura 53 y la grafica en la figura 54.
+\begin{center}
+    \includegraphics[width = 11cm]{anexo/a1200g.PNG}\\
+    Figura 53 - Gráfica de ejecucion de pivote con arreglo de 199 elementos.
+\end{center}
+\begin{center}
+    \includegraphics[width = 8.5cm]{anexo/a1200t.PNG}\\
+    Figura 54 - Tiempo de ejecucion del pivote con 199 elementos.
+\end{center}
+\begin{center}
+    \includegraphics[width = 8.5cm]{anexo/a12001.PNG}\\
+    Figura 55 - Tiempo de ejecucion del pivote con 199 elementos.
+\end{center}
+
+Realizaremos una prueba más con un arreglo de 990 elementos. Obteniendo el valor de el pivote en retorno a cada moviento, su grafica y tiempo de ejecuci\'on como se puede mostrar en las figuras 55 y 56
+
+\begin{center}
+    \includegraphics[width = 11cm]{anexo/a1990g.PNG}\\
+    Figura 55 - Gráfica de ejecucion de pivote con arreglo de 991 elementos.
+\end{center}
+\begin{center}
+    \includegraphics[width = 8.5cm]{anexo/a1990t.PNG}\\
+    Figura 56 - Tiempo de ejecucion del pivote con 991 elementos.
+\end{center}
+\begin{center}
+    \includegraphics[width = 8.5cm]{anexo/a19901.PNG}\\
+    Figura 57 - Tiempo de ejecucion del pivote con 991 elementos.
+\end{center}
+Podemos concluir que el valor del pivote (el \'ultimo valor que toma) es igual al valor n-1 y notamos que cada llamado del pivote va desde 0 hasta n-1 increment\'andose en una unidad.
+Como funcion que acota este programa utilizaremos la misma del ejercicio siguiente el cual determina el tiempo de ejecucion cuando los elementos del arreglo tienen el mismo valor, se usa la misma funcion para acotar la cual es la siguiente:
+\begin{center}
+    $f(n) = \frac{n^2}{11000000}$
+\end{center}
+Como se muestra en la figura 58 nos acota de manera correcta la grafica obtenida con arreglo de 991 elementos.
+\begin{center}
+    \includegraphics[width = 10cm]{anexo/q8.png}\\
+    Figura 58 - Gráfica del QuickSort con arreglos de elementos del mismo valor hasta tamaño 997 acotada por $f(n)$.
+\end{center}
+Dandonos como resultado un orden de complejidad \begin{center}
+    $QuickSort \in O(n^2)$
+\end{center}
+
+\subsection{Tiempo de ejecución de QuickSort cuando todos los elementos de un arreglo tienen el mismo valor}
+Para este problema, primero creamos una función capaz de retornarnos una lista con los mismos elementos, en este caso se escogió el elemento 0 y dicha función quedó de la siguiente manera.
+\begin{lstlisting}
+def crearListaMismosElementos(n):
+	return [0 for i in range(n)]
+\end{lstlisting}
+\begin{center}
+    Código 10 - Función que crea una lista de tamaño n con elementos 0.
+\end{center}
+Y al probar esta función observamos que efectivamente se crean listas de tamaño n con sus elementos todos en 0, como se muestra en la figura 59.
+\begin{center}
+    \includegraphics[width = 10cm]{anexo/q1.png}\\
+    Figura 59 - Resultado en consola de la función crearListaMismosElementos.
+\end{center}
+Probamos primeramente el tiempo de ejecución con 5 elementos, estos fueron tiempos muy pequeños pero pudimos ir observando como se iba comportando nuestro algoritmo de QuickSort con elementos del mismo valor, esto lo podemos ver en la figura 60.
+\begin{center}
+    \includegraphics[width = 10cm]{anexo/q2.png}\\
+    Figura 60 - Resultado en consola de los tiempos de ejecución con hasta 5 elementos.
+\end{center}
+Ahora bien, para conocer el orden de complejidad para este caso con estas listas con los mismos elementos ingresamos listas de mayor tamaño. Para la figura 61 y 62 se hicieron para arreglos de hasta tamaño 100, en la figura 61 vemos que se va comportando como una gráfica entre lineal y cuadrática, muy similar a la del Karatsuba, mientras que en la figura 62 observamos los tiempos de ejecución del arreglo de tamaño 90 hasta el arreglo de tamaño 100.
+\begin{center}
+    \includegraphics[width = 10cm]{anexo/q3.png}\\
+    Figura 61 - Gráfica del QuickSort con arreglos de elementos del mismo valor hasta tamaño 100.
+\end{center}
+\begin{center}
+    \includegraphics[width = 10cm]{anexo/q4.png}\\
+    Figura 62 - Resultado en consola del QuickSort con arreglos de elementos del mismo valor hasta tamaño 100.
+\end{center}
+Podemos conocer mejor el comportamiento de una gráfica con más elementos así que se siguió con una prueba de hasta arreglos de un tamaño 15,000. Desafortunadamente, nos encontramos con un problema que tiene el algoritmo de QuickSort y es que está limitado a un tamaño de pila, este problema se muestra en la figura 63.
+\begin{center}
+    \includegraphics[width = 10cm]{anexo/q5.png}\\
+    Figura 63 - Resultado en consola del QuickSort con arreglos de elementos del mismo valor hasta tamaño 15,000.
+\end{center}
+Como el último experimento posible es con un arreglo de hasta tamaño 997, este fue el límite que se tomo y se hicieron las respectivas gráficas de esto. En la figura 64 observamos una gráfica con un comportamiento más de una cuadrática, mientras que en la figura 65 observamos los tiempos de arreglos desde tamaño 988 hasta 997.
+\begin{center}
+    \includegraphics[width = 10cm]{anexo/q6.png}\\
+    Figura 64 - Gráfica del QuickSort con arreglos de elementos del mismo valor hasta tamaño 997.
+\end{center}
+\begin{center}
+    \includegraphics[width = 10cm]{anexo/q7.png}\\
+    Figura 65 - Resultado en consola del QuickSort con arreglos de elementos del mismo valor hasta tamaño 997.
+\end{center}
+Ya por último verificaremos con que función $f(n)$ pueden ser acotadas estas gráficas que obtuvimos. La función $f(n)$ que nos permitió mejor acotar nuestras gráficas fue la siguiente.
+\begin{center}
+    $f(n) = \frac{n^2}{11000000}$
+\end{center}
+Y en la figura 66 observamos como acota nuestra gráfica de una muy correcta forma. Por lo tanto se concluiría que el orden de complejidad en este caso es de,
+\begin{center}
+    $QuickSort \in O(n^2)$
+\end{center}
+\begin{center}
+    \includegraphics[width = 10cm]{anexo/q8.png}\\
+    Figura 66 - Gráfica del QuickSort con arreglos de elementos del mismo valor hasta tamaño 997 acotada por $f(n)$.
+\end{center}
+
+\subsection{Multiplicación de u=78390845 y v=20478264 mediante el algoritmo de Karatsuba.}
+Finalmente, este problema lo podemos resolver muy sencillamente gracias a las herramientas que nos proporciona Python, simplemente ingresamos al código donde estamos trabajando y metemos los números pedidos dentro de la función Karatsuba. En la figura 67 podemos ver el resultado de la multiplicación entre 78390845 * 20478264.
+\begin{center}
+    \includegraphics[width = 12cm]{anexo/kar.png}\\
+    Figura 67 - Resultado en consola del algoritmo de Karatsuba multiplicando 78390845 * 20478264.
+\end{center}
+A continuación en la figura 68 se muestra la comprobación de la multiplicación obtenida.
+\begin{center}
+    \includegraphics[width = 4cm]{anexo/verK.png}\\
+    Figura 68 - Comprobación en una multiplicadora convencional de la multiplicación 78390845 * 20478264.
+\end{center}
+\section{Bibliograf\'ia}
+[1]"Multiplication algorithm", En.wikipedia.org, 2020. [Online]. Disponible: https://en.wikipedia.org/wiki/Multiplication\_algorithm. [Consultado: 30- Mar- 2020].\newline
+[2]K. Moore, P. Jain and D. Ye, "Karatsuba Algorithm | Brilliant Math & Science Wiki", Brilliant.org, 2015. [Online]. Disponible: https://brilliant.org/wiki/karatsuba-algorithm/. [Consultado: 30- Mar- 2020].\newline
+[3]O. Dosunmu, "Karatsuba Algorithm (for fast integer multiplication)", OpenGenus IQ: Learn Computer Science. [Online]. Available:https://iq.opengenus.org/karatsuba-algorithm/. [Accessed: 30- Mar- 2020]. \newline
+[4] The Quick Sort | Problem Solving with Algorithms and
+Data Structures", Interactivepython.org, 2018. [Online]. Disponible: http://interactivepython.org/runestone/static/pythonds/SortSearch/TheQuickSort.html. [Accesso: 13- Mar- 2018]. \newline
+[5] \Analisis de Algoritmos: Complejidad", Lab.dit.upm.es, 1997. [Online]. Disponible: http://www.lab.dit.upm.es/lprg/material/apuntes/o/index.
+html. [Acceso: 06- Feb- 2018]. \newline
+[6] R. Wachenchauzer, M. Manterola, M. Curia, M. Medrano and N. Paez, Algoritmos de Programacion con Python. \newline
+\end{document}

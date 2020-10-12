@@ -1,0 +1,558 @@
+\documentclass[12pt,twoside]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{amsmath}
+\usepackage[active]{srcltx}
+\usepackage{amssymb}
+\usepackage{amscd}
+\usepackage{makeidx}
+\usepackage{amsthm}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\renewcommand{\baselinestretch}{1}
+\setcounter{page}{1}
+\setlength{\textheight}{21.6cm}
+\setlength{\textwidth}{14cm}
+\setlength{\oddsidemargin}{1cm}
+\setlength{\evensidemargin}{1cm}
+\pagestyle{myheadings}
+\thispagestyle{empty}
+\markboth{\small{Pr\'actica 2. \'Eduardo, Daniel.}}{\small{.}}
+\date{}
+\begin{document}
+\centerline{\bf An\'alisis de Algoritmos, Sem: 2020-1, 3CV2, Pr\'actica 2, 12 de febrero de 2020}
+\centerline{}
+\centerline{}
+\begin{center}
+\Large{\textsc{Pr\´actica 2: Funciones Recursivas vs Iterativas.}}
+\end{center}
+\centerline{}
+\centerline{\bf {Mendoza Mart\'inez Eduardo, Aguilar Gonzalez Daniel.}}
+\centerline{}
+\centerline{Escuela Superior de C\'omputo}
+\centerline{Instituto Polit\'ecnico Nacional, M\'exico}
+\centerline{$edoomm8@gmail.com, daguilarglz97@gmail.com$}
+\newtheorem{Theorem}{\quad Theorem}[section]
+\newtheorem{Definition}[Theorem]{\quad Definition}
+\newtheorem{Corollary}[Theorem]{\quad Corollary}
+\newtheorem{Lemma}[Theorem]{\quad Lemma}
+\newtheorem{Example}[Theorem]{\quad Example}
+\bigskip
+\textbf{Resumen:} La siguiente pr\´actica pretende mostrar el comportamiento de dos algoritmos (C\´alculo del Producto y  Cociente de dos n\´umeros) implementados mediante funciones recursivas e iterativas y comparando sus tiempos de ejecuci\´on, as\´i como la complejidad de estos. \newline
+{\bf Palabras Clave:} Complejidad algor\´itmica, funciones iterativas, funciones recursivas.
+\section{Introducci\'on}
+Anteriormente ya hab\´iamos hablado de la existencia de diversos tipos de algoritmos,
+y sus complejidades y c\´omo estos factores in
+u\´ian en la eficiencia de \´estos.
+En esta pr\´actica, nos encargaremos de mostrar las diferencias (desde n\´umero
+de l\´ineas de c\´odigo, pasando por tiempo invertido en la ejecuci\´on, hasta llegar
+a la complejidad algor\´itmica) de dos algoritmos:Producto y Cociente de dos n\´umeros, implent\´andolos mediante funciones recursivas e iterativas, para visualizar las diferencias de costo computacional que requiere cada uno en cada m\´etodo, y la complejidad que conllevan.
+\section{Conceptos B\'asicos}
+Se requiere conocer algunos conceptos relacionados
+a la implementaci\´on de los algoritmos estudiados en esta pr\´actica y los
+m\´etodos a trav\´es de los cuales se desarrollaron. Se presenta a continuaci\´on la informaci\´on correspondiente.
+\subsection{Funci\´on recursiva.}
+Una funci\´on recursiva es aquella que se llama as\´i misma para resolverse. Dicho de otra manera, una funci\´on recursiva se resuelve con una llamada as\´i misma, cambiando el valor de un par\´ametro en la llamada a la funci\´on. A trav\´es de las sucesivas llamadas recursivas a la funci\´on se van obteniendo valores que, sirven para obtener el valor de la funci\´on llamada originalmente. El proceso de llamadas recursivas siempre tiene que acabar en una llamada a la funci\´on que se resuelve de manera directa, sin necesidad de invocar de nuevo la funci\´on. Esto ser\´a siempre necesario, para que llegue un momento que se corten las llamadas reiterativas a la funci\´on y no se entre en un bucle inf\´inito de invocaciones.
+\subsection{Funci\´on iterativa}
+Iteración es un vocablo que tiene su origen en el término latino iteratio. Se trata de una palabra que describe el acto y consecuencia de iterar, un verbo que se emplea como sinónimo de reiterar o repetir (entendidos como volver a desarrollar una acción
+o pronunciar de nuevo lo que ya se había dicho).
+Cabe mencionar que en informática se asocia una iteración con los términos bucle y estructura de control, que hacen referencia a las palabras reservadas while y for, entre otras. Básicamente, se suele
+establecer una condición que se debe cumplir para que las líneas de código dentro de dichos bucles se ejecuten. Sin embargo, en muchos casos es necesario realizar al menos una vez dichas acciones antes
+de la comprobación, para lo cual se usa un modelo diferente, contemplado en algunos lenguajes con estructuras como do while.\\ \\
+\textit{Todo algoritmo recursivo puede expresarse como iterativo y
+viceversa. Sin embargo, según las condiciones del problema a
+resolver podrá ser preferible utilizar la solución recursiva o la
+iterativa.}
+\subsection{Producto de dos enteros}
+Se le conoce c\´omo producto al resultado al que se llega tras multiplicar un n\´umero por otro.
+\subsection{Cociente de dos enteros}
+Se le conoce c\´omo cociente al resultado al que se llega tras dividir un número por otro. En este sentido, el cociente sirve para indicar qué cantidad de veces el divisor está contenido en el dividendo.
+\subsection{Complejidad Temporal}
+Se denomina complejidad temporal a la función T(n) que mide el número de instrucciones realizadas por el algoritmo para procesar los n elementos de entrada.
+Cada instrucción tiene asociado un costo temporal.
+Afecta al tiempo de ejecución el orden en que se procesen los elementos de entrada. Podría considerarse que los valores de los n casos que se presentan como entrada son los correspondientes: a un caso típico, o a un caso promedio, o de peor caso. El peor caso es el más sencillo de definir (el que demore más para cualquier entrada), pero si se desea otros tipos de
+entrada habría que definir qué se considera típico, o la distribución de los valores en el caso
+promedio.
+
+\section{Experimentaci\'on y Resultados}
+
+\subsection{Producto de dos enteros positivos}
+Para esta parte de la practica se implementaron 3 algoritmos (iterativos y recursivos) los cuales son capaces de calcular el producto de dos enteros positivos.
+\newline
+\subsubsection{Primer algoritmo:}
+\begin{lstlisting}
+int prod1(int m, int n)
+1--    r=0
+2--    while n>0
+3--        r=r+m
+4--        n--
+5--    return r
+\end{lstlisting}
+\newline
+\begin{enumerate} a) Mejor y Peor Caso. \newline\newline
+Al observar el algoritmo podemos notar que "El mejor caso" se presenta cuando n no es mayor a 0 es decir es igual ya que si es =0 no entra dentro del while y solo nos devuelve el valor inicial de r que es 0, esto es correcto ya que cualquier numero multiplicado por 0 = 0. \newline
+"El peor caso" se presenta cuando n (numero ingresado) es un n\´umero muy grande ya que al ser  mayor que 0 entra al ciclo while y ejecuta las lineas de codigo dentro de el, se considera el peor caso ya que al ser muy grande este se decrementar\´a de 1 en 1 y esto puede tardar mucho tiempo de ejecuci\´on. Por lo tanto $prod1 \in O(n)$.
+\end{enumerate}
+
+\begin{enumerate} b) Propuesta de Orden de complejidad. \newline\newline
+Para el peor caso, se graficó $tiempo$ vs $números que n fuera tomando$, por otro lado $m$ siempre se mantuvo en 1. A continuación se muestran algunos resultados.\newline\newline
+Con $m < 1000000$\newline
+\begin{center}
+    \includegraphics[height = 8cm]{Producto/prod1A1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Producto/prod1A2.png}
+\end{center}
+Con $m < 10000000$ y proponiendo $f(n) = \frac{1}{10[6}n + 0.05$ que acote nuestra función\newline
+\begin{center}
+    \includegraphics[height = 8cm]{Producto/prod1B1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Producto/prod1B2.png}
+\end{center}
+\end{enumerate}
+\begin{enumerate} c) Orden de complejidad de manera analítica
+\newline\newline
+Procederemos a calcular el orden de complejidad mediante el m\´etodo por bloques.
+Observando el algoritmo notamos que las lineas 1,3 y 4 son $O(1)$, al mismo tiempo que la línea 2 es $O(n)$\newline
+Por lo que \newline
+$prod1 \in O(1) + O(n)$\newline
+$\therefore prod1 \in O(n)$
+
+\end{enumerate}
+
+\subsubsection{Segundo algoritmo:}
+
+\begin{lstlisting}
+int prod2(int m, int n)
+1--	r=0
+2--	while n>0
+3--		if n & 1
+4--			r=r+m
+5--		m=2*m
+6--		n=n/2
+7--	return r
+\end{lstlisting}
+\newline
+\begin{enumerate} a) Mejor y Peor Caso. \newline\newline
+Este algoritmo tiene un mejor y peor caso como el anterior, cuaando $n < 0$, no se entrará al while y por tanto $prod2 \in \Omega(1)$. Mientras que cuando $n$ sea un número muy grande, la funció realizará más pasos por entrar al $while$, así $prod2 \in O(\log_2n)$
+\end{enumerate}
+\begin{enumerate} b) Propuesta de Orden de complejidad \newline\newline
+Con $m < 1000000$
+\begin{center}
+    \includegraphics[height = 8cm]{Producto/prod2A1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Producto/prod2A2.png}
+\end{center}
+Con $m < 10000000$, proponiendo un $f(n)$ que acote nuestra función se propusó $f(n) = \frac{1}{10^3.9}\log_2n$
+\begin{center}
+    \includegraphics[height = 8cm]{Producto/prod2B2.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Producto/prod2B1.png}
+\end{center}
+\end{enumerate}
+Bien se puede observar que los puntos graficados pueden ser acotados superiormente por una función $\log n$
+ \begin{enumerate} c) Orden de complejidad de manera anal\´itica
+     \newline\newline
+Procederemos a calcular el orden de complejidad mediante el m\´etodo por bloques.
+Observando el algoritmo notamos que las lineas 1,3,4 y 5 son $O(1)$, al mismo tiempo que la línea 2 es $O(n)$ y la linea 6 es $O(\log_2n)$\newline
+Por lo que \newline
+$prod1 \in O(1) + O(n) + O(\log_2n)$\newline
+$\therefore prod1 \in O(\log_2n)$
+ \end{enumerate}
+\newline
+\subsubsection{Tercer algoritmo (recursivo):}
+\begin{lstlisting}
+int prod3(int a, int b)
+1--	if b==1
+2--		return a
+3--	else
+4--		return a+prod3(a,b-1)
+\end{lstlisting}
+\begin{enumerate} a) Mejor y Peor Caso. \newline\newline
+Al analizar el algoritmo presentado nos podemos dar cuenta que "El mejor caso" se presenta cuando el numero asignado como b es = 1 ya que solo entrará a la sentencia if y nos retornará el valor de nuestro otro n\´umero, esto es correcto debido a que cualquier n\´umero a multiplicado por 1 nos da como resultado nuestro mismo n\´umero a.
+
+"El peor caso" se presenta cuando los dos numeros ingresados son diferentes a 1 ya que entra a nuestro caso else y nos retorna la funci\´on recursiva la cual requiere mayor tiempo y uso de memoria que el mejor caso antes presentado.
+\end{enumerate}
+
+\begin{enumerate} b) Propuesta de Orden de Complejidad \newline\newline
+Con $b < 500$
+\begin{center}
+    \includegraphics[height = 8cm]{Producto/prod3A1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Producto/prod3A2.png}
+\end{center}
+Con $b < 900$ y $f(n) = \frac{1}{10^6} + 0.001$
+\begin{center}
+    \includegraphics[height = 8cm]{Producto/prod3B1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Producto/prod3B2.png}
+\end{center}
+Es importante destecar que este algoritmo al ser recursivo esta limitado por la capacidad de la pila que se tiene. Aún así, las gráficas muestran que se puede acotar estas funciones por una función lineal $n$
+\end{enumerate}
+\begin{enumerate} c) Orden de complejidad de manera Anal\´itica.
+\newline\newline
+Para calcular el orden de complejidad usaremos el método por bloques, observando podemos depreciar la primer sentencia if y solamente analizar la sentencia del else ya que es aquí donde se implementa la recursividad. A continuaci\´on observamos que la recurrencia es
+\begin{equation}
+  T(n) =
+    \begin{cases}
+      c & \text{si $n = 0$}\\
+      $T(n-1) + 1$ & \text{si $n > 0$}\\
+    \end{cases}
+\end{equation}
+A continuaci\´on la resolveremos mediante el metodo decremento hacia atr\´as
+\newline
+$T(n) = T(n-1) + 1$\newline
+    $ = T(n-2) + 2$\newline
+    $.$\newline
+    $.$\newline
+    $.$\newline
+    $ = T(n-i) + i$\newline
+    $.$\newline
+    $.$\newline
+    $.$\newline
+    $ = T(0) + n = c + n$\newline
+$\therefore div3 \in O(n)$
+
+\end{enumerate}
+\subsubsection{Determinición del mejor algoritmo}
+Una vez analizado todos los 3 algoritmos, podemos concluir el que más eficiente es, es el que tiene un orden de complejidad menor, es decir, el segundo algoritmo tuvo $O(\log_2n)$ y claramente se ve en las gráficas el tiempo que se tarda para hacer los cálculos. Mientras que el peor, puede ser el recursivo, es lineal como el primero, i.e.: $O(n)$, sin embargo con este algoritmo se tiene una gran desventaja, ya que está restringido a la pila que se usa en la recursividad, y es casi imposible calcular multiplicaciones grandes con este algoritmo.
+\subsection{Cociente de dos enteros positivos}
+\subsubsection{Primer algoritmo}
+El primer algoritmo de esta práctica se muestra a continuación
+\begin{lstlisting}
+int div1 (int n, int div, int *r)
+1-- q = 0
+2--     while n>=div
+3--         n = n-div
+4--         q++
+5-- *r=n
+6-- return q
+\end{lstlisting}
+\subsubsection{Mejor y peor caso}
+Como se puede observar \textbf{el mejor caso} es cuando $n$ es mayor a $div$, es decir, cuando el númerador es mayor que el denominador, en tal caso, no se entrará al ciclo $while$ y como se observa nuestra función $div1 \in \Omega(1)$ \newline\newline
+Por otro lado en \textbf{el peor de los casos} se tiene cuando nuestra $div$, es decir el numerador, es la mínima unidad de los enteros, en otras palabras, cuando $div = 1$, ya que en este caso, se recorrerá el while de manera lineal por $div$ hasta que $n >= div$ y como se dijo antes, este se recorrerá de uno en uno. Así, $div1 \in O(n)$
+\subsubsection{Propuesta de orden de complejidad a partir de datos experimentales}
+Con datos experimentales podemos observar una situación similar, las siguientes gráficas que se mostrarán a continuación serán todas usando en nuestro $div = 1 = dividendo$ y con diferentes valores de $n = numerador$\newline\newline
+Con $div$ hasta 100
+\begin{center}
+    \includegraphics[height = 6cm]{Cociente/1.png}
+\end{center}
+Resultado en consola:
+\begin{center}
+    \includegraphics[height = 9cm]{Cociente/2.png}
+\end{center}
+Ahora con $div$ hasta 1000, se obtiene una gráfica muy similar, lo que claramente nos indica que se trata, en su peor caso, que es lineal. Y se propone una $f(n) = \frac{1}{10^6.5}n$
+\begin{center}
+    \includegraphics[height = 6cm]{Cociente/div1A.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Cociente/div1B.png}
+\end{center}
+Los picos que se pueden producir son tal vez a que la computadora estaba recien empezando a prenderse y este puede ser ese factor que origina esos picos inesperados, por los procesos que está iniciando el sistema operativo. Aún así, claramente se puede observer que es lineal este algoritmo en su peor caso. Por lo que, a partir de datos experimentales se llega a que $div1 \in O(n)$
+\subsubsection{Cálculo analítico del orden de complejidad}
+Calcularemos el orden de complejidad por bloques, ya que este resulta un poco más fácil de entender y de analizar.\newline
+Observando el algoritmo, se ve que las líneas 1, 3, 4, 5 y 6 son $O(1)$, mientras que la línea 2 es $O(n)$\newline
+Por lo que\newline\newline
+$div1 \in O(1) + O(n)$\newline
+$\therefore div1 \in O(n)$
+\subsubsection{Segundo algoritmo}
+Para este segundo algoritmo se tuvo el siguiente pseudocódigo
+\begin{lstlisting}
+int div2(int n, int div, int *r)
+1-- int dd=div
+2-- int q=0
+3-- *r=n
+4-- while dd<=n
+5--     dd=2*dd
+6-- while dd>div
+7--     dd=dd/2
+8--     q=2*q
+9--     if(dd<=*r)
+10--      *r=*r-dd
+11--      q++
+12-- return q
+\end{lstlisting}
+\subsubsection{Mejor y peor caso}
+Como se ha observado en algoritmos anterirores el mejor caso será cuando recorre menos pasos nuestros algoritmos. En este caso, en el algoritmo que se está analizando vemos que el menor número de pasos se dará cuando $div > n$, i.e., cuando el $denominador > numerador$, ya que no entrará a los $while$ de las lineas 4 y 6. Por lo que:\newline\newline
+$div2 \in \Omega(1)$\newline\newline
+Mientras que por otro lado, para el peor caso se tiene que cumplir la misma condición que el primer algoritmo, que nuestro $denominador = 1$, en algunos casos, este algoritmo, sigue la misma cantidad de pasos con $denomindaor = 2$ o hasta a veces con $denomindaor = 3$, pero siempre se observa que el peor caso, con el mayor número de pasos se observa cuando $div = 1$. En tal caso, observamos que, siendo $div = 1$, la variable $dd$ también será $1$ al inicio, y esta se irá incrementando por $2$ hasta que $dd > n$, por lo que desde ahí ya se puede observar la complejidad que tendrá nuestro algoritmo, dado que el siguiente ciclo va decrementando entre $2$ y se puede ver que los dos ciclos tienen la misma complejidad en el peor de los casos. Así:\newline\newline
+$div2 \in O(\log_2n)$
+\subsubsection{Propuesta de orden de complejidad a partir de datos experimentales}
+Para el peor caso, se graficó $tiempo$ vs $números que el numerador fuera tomando$, el $denominador$ siempre se mantuvo en 1. A continuación se muestran algunos resultados.\newline\newline
+Con $numerador < 100$
+\begin{center}
+    \includegraphics[height = 8cm]{Cociente/div2A1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Cociente/div2A2.png}
+\end{center}
+Con $numerador < 1000$
+\begin{center}
+    \includegraphics[height = 8cm]{Cociente/div2B1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Cociente/div2B2.png}
+\end{center}
+Finalmente con $numerador < 1000000$ y con $f(n) = \frac{1}{10^5}\log_2(n)$
+\begin{center}
+    \includegraphics[height = 8cm]{Cociente/div2C1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Cociente/div2C2.png}
+\end{center}
+Así se observa que efectivamente el algoritmo tiene una complejidad de $\log n$, en la últimna prueba con $1,000,000$ se puede observar que donde más intenso es el azul de los puntos de donde cayeron el tiempo y los números, es efectivamente donde yace la gráfica $f(x) = \log n$. Por lo tanto\newline\newline
+$div2 \in O(\log_2n)$
+\subsubsection{Cálculo analítico del orden de complejidad}
+Para este alogritmo de igual manera su orden de complejidad se calculará por bloques.\newline
+De la línea 1 a la 3 y la 12 también, se observa que tienen orden de complejidad $O(1)$. Mientras que la 4 y 5 tienen orden de complejidad $O(\log_2n)$, ya que la 5 tiene $O(1)$, mientras que la 4, se podría decir que es dependiente de lo que pase en la linea 5, y se tiene una expresión donde la variable $dd$ incrementará por dos su valor hasta llegar a la varible $n$. Por lo que las lineas 4 y 5 son $O(\log_2n)$. Después se observa que las líneas 7 hasta la 11 tienen orden de complejidad $O(1)$. Mientras que la linea 6, cumple el mismo caso que la linea 4, así, de la linea 6 a la 11 tienen un orden de complejidad $O(\log_2n)$. Por lo tanto:\newline\newline
+$div2 \in O(1) + O(\log_2n) + O(\log_2n)$\newline
+$\therefore div2 \in O(\log_2n)$
+\subsubsection{Tercer algoritmo}
+El último algoritmo de la práctica fue el siguiente, un algoritmo recursivo para el cálculo de una división.
+\begin{lstlisting}
+int div3 (int n, int div)
+1-- if div>n
+2--     return 0
+3-- else
+4--     return 1 + div3(n-div, div)
+\end{lstlisting}
+A simple vista puede parecer un mejor algoritmo, por las pocas líneas de código que tiene, sin embargo, es recursivo, y se tendrá que calcular su recurrencia para saber si sí es un mejor algoritmo o no.
+\subsubsection{Mejor y peor caso}
+El mejor caso, otra vez se observa que se da cuando $div > n$, i.e., $denominador > numerador$. En dado caso esta función entrará al primer $if$ y retornará un $0$. Así,\newline\newline
+$div3 \in \Omega(1)$\newline\newline
+Por otro lado, para el peor caso, se observa que se da como en las otras funciones, cuando $div = denominador = 1$, ya que en este caso irá haciendo sumas de 1 en 1 hasta que $div > n$. Sin embargo para calcular $O$, necesitaremos calcular su recurrencia, misma que se verá más adelante en el punto 3.2.12.
+\subsubsection{Propuesta de orden de complejidad a partir de datos experimentales}
+De igual manera, se siguieron la misma serie de pasos para observar la gráfica $tiempo$ vs $números$, con las que se usaron en los dos algoritmos anteriores.
+Con $numerador < 100$
+\begin{center}
+    \includegraphics[height = 8cm]{Cociente/div3A1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Cociente/div3A2.png}
+\end{center}
+Con $numerador < 1000$ se quizo probar, sin embargo, a partir de $numerador = 998$, la pila excede su capacidad y no es posible hacer divisiones de tales magnitudes con este algoritmo.
+\begin{center}
+    \includegraphics[height = 8cm]{Cociente/div3B1.png}
+\end{center}
+Entonces se probó con $numerador < 250$
+\begin{center}
+    \includegraphics[height = 8cm]{Cociente/div3C1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Cociente/div3C2.png}
+\end{center}
+Y finalmente con $numerador < 500$ y $f(n) = \frac{1}{10^6.5}n$
+\begin{center}
+    \includegraphics[height = 8cm]{Cociente/div3D1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Cociente/div3D2.png}
+\end{center}
+Con las gráficas mostradas se pueden observar que son muy similares a las del primer algoritmo. Entonces, se puede concluir que a partir de los datos experimentales,\newline\newline
+$div3 \in O(n)$
+\subsubsection{Cálculo analítico del orden de complejidad}
+Calculando por bloques esta función, se observa que se deprecia la primer sentencia del $if$ y únicamente se analiza, la sentencia del $else$ donde se implementa la recursividad.\newline
+Para esto se observa que la recurrencia es de la siguiente manera,\newline
+\begin{equation}
+  T(n) =
+    \begin{cases}
+      c & \text{si $n = 0$}\\
+      $T(n-1) + 1$ & \text{si $n > 0$}\\
+    \end{cases}
+\end{equation}
+Resolviendo esta recurrencia se tiene\newline
+$T(n) = T(n-1) + 1$\newline
+    $ = T(n-2) + 2$\newline
+    $.$\newline
+    $.$\newline
+    $.$\newline
+    $ = T(n-i) + i$\newline
+    $.$\newline
+    $.$\newline
+    $.$\newline
+    $ = T(0) + n = c + n$\newline
+$\therefore div3 \in O(n)$
+\subsubsection{Determinación de mejor algoritmo}
+Una vez visto y analizado los algoritmos, podemos llegar a la conclusión que el algoritmo más eficiente es aquel que tuvo un orden de complejidad $O(logn)$, dicho algoritmo fue $div2$, los otros tuvieron orden de complejidad $O(n)$, y el recursivo resulto ser el menos eficiente, por dos factores: ser de complejidad $O(n)$ y tener un capacidad limitada para realizar divisiones. Como se observó en la experimentación, este algoritmo, en su peor caso, no podía dividir números entre $1$, mayores a 998, puede ser que en otras computadoras se permitieran números más grandes, pero al final siempre este algoritmo estará restringido.
+\section{Conclusiones}
+Eduardo Mendoza Martínez\newline
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \begin{center}
+    \includegraphics[width=6cm\textwidth]{ed.png}
+  \end{center}
+
+\end{wrapfigure}
+Como se vió en esta práctica, es importante conocer que algoritmo puede ser mejor y saber como compararlos entre sí. Cuando se empieza a programar es común creer que «menos es mejor», pero esto no ocurre en el mundo de la computación, la mayor parte del tiempo más código es mejor, puede ser más rápido y hacer una tarea con mayor eficiencia. Ejemplos que se me pueden venir a la mente, son todos los métodos matemáticos que se computan a través de algoritmos medianamente grandes, para conocer números primos, integrar, transformar regiones, etc. Todos estos algoritmos llegan a usar muchas líneas de código dado que en una computadora es demasiado rápido hacer operaciones aritméticas básicas, mientras que algunos de esos procesos a nosotros nos pueden parecer tediosos, para una computadora no es nada y lo hace muy rápido. Claramente esto se observó en el algoritmo del cociente, se nos dieron 3 algoritmos y sorpresivamente el que tenía más lineas de código fue el que resulto ser el mejor. Así con un simple vistazo, se pudo haber dicho que la función recursiva podría ser mejor que cualquier de las otros dos, sin embargo, no fue el caso. A través del análisis a priori y a posteriori vimos como que el que tenía más lineas de código resultó ser mejor, e inclusive el recursivo resultó ser un poco peor ya que no acepta números muy grandes por depender de la pila que se usa en funciones recursivas, esta excede el límite que se tiene. A partir de esto he llegado a esta conclusión, que muchas veces en la programación más es mejor, mientras nuestros algoritmos usen al máximo los recursos computacionales de una computadora mejor, para nosotros puede resultar tedioso seguir una serie de pasos muy larga, pero para una computadora no resulta nada complicado y nos permite realizar y calcular cosas complicadas.
+\newline \newline \newline \newline
+Daniel Aguilar Gonzalez\newline
+
+El desarrollo de esta práctica me sirvió para poder comprender un poco más a fondo como es que se realiza un análisis a un algoritmo para así poder determinar orden de complejidad, tiempo de ejecución, etc.
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \begin{center}
+    \includegraphics[width=6cm\textwidth]{dan.png}
+\end{center}
+\end{wrapfigure}
+Cómo pudimos observar en la durante la práctica existen más de un algoritmo los cuales nos pueden ayudar a solucionar el mismo problema planteado, es por esto que se debe llevar a cabo un análisis a cada uno para poder determinar qué algoritmo es el más eficiente, hablando en tiempo y uso de recursos (memoria) todo esto para darnos la solución correcta, rápida y Eficaz a la que queremos llegar. Como también se pudo observar en ella un algoritmo con menos líneas de código no siempre es el más eficiente, como ejemplo de esto se mostraron 3 algoritmos los cuales calculan el producto de dos enteros positivos pero en uno de ellos se usa una función recursiva y hace que el algoritmo tenga muchas menos líneas de ejecución más sin embargo este algoritmo es el que más requiere del uso de recursos y es de los que más tiempo de ejecución requiere.
+\section{Anexo}
+\subsection{Cálculo del orden de complejidad del BubbleSort}
+Para calcular el orden de complejidad de este algoritmo, se obtuvo lo siguiente.
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Línea & Costo\\
+\hline
+$C_{1}$ &n\\
+\hline
+$C_{2}$ &$\Sigma_{j=i}^{n-1}t_{i}$\\
+\hline
+$C_{3}$ &$\Sigma_{j=i}^{n-1}(t_{i} - 1)$\\
+\hline
+$C_{4}$ &$\Sigma_{j=i}^{n-1}(t_{i} - 1)$\\
+\hline
+\end{tabular}
+\end{center}
+Así, para $t_j$ se tiene lo siguiente.
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+j & t_j\\
+\hline
+$1$ &n\\
+\hline
+$2$ &n - 1\\
+\hline
+...&...\\
+\hline
+$j$ &n-j+1\\
+\hline
+\end{tabular}
+\end{center}
+Por lo que nuestra $T(n)$ quedaría conformada de la siguiente forma.\newline
+$T(n) = C1n + C2\Sigma_{j=i}^{n-1}t_{i} + (C3 + C4)\Sigma_{j=i}^{n-1}(t_{i} - 1)$\newline
+$T(n) = C1n + C2\Sigma_{j=i}^{n-1}(n-j+1) + (C3 + C4)\Sigma_{j=i}^{n-1}(n-j)$\newline
+$T(n) = C1n + \frac{1}{2}C2(i-n-2)(i-n-1) + \frac{1}{2}(C3 + C4)(i-n-1)(i-n)$\newline
+i.e.,\newline
+$T(n) = an^2 + bn + c$\newline
+$\therefore T(n) \in O(n^2)$
+\subsection{Problemas 24 de la lista de problemas}
+\subsubsection{Primer problema}
+\begin{equation}
+  x(n) =
+    \begin{cases}
+      x(n-1) + 5&, n>1\\
+      0 &, n=1\\
+    \end{cases}
+\end{equation}
+\begin{center}
+    x(n) = x(n-1) + 5 \\
+     = x(n-2) + 5 + 5\\
+     = x(n-3) + 5 + 5 + 5\\.\\.\\.\\
+     = x(n-i) + 5i\\.\\.\\.\\
+     = x(1) + 5(n+1) = 5n + 5
+\end{center}
+\subsubsection{Segundo problema}
+\begin{equation}
+  x(n) =
+    \begin{cases}
+      3x(n-1) &, n>1\\
+      4 &, n=1\\
+    \end{cases}
+\end{equation}
+\begin{center}
+    x(n) = 3x(n-1) \\
+         = 3(3x(n-2)) = $3^2$x(n-2) \\
+         = $3^2$(3x(n-3)) = $3^3$x(n-3) \\.\\.\\.\\
+         = $3^i$x(n-i) \\.\\.\\.\\
+         = $3^{n+1}$x(1) = $4(3^{n+1})$
+\end{center}
+\subsubsection{Tercer problema}
+\begin{equation}
+  x(n) =
+    \begin{cases}
+      x(n/2) + n &, n>1\\
+      1 &, n=1\\
+    \end{cases}
+\end{equation}
+\begin{center}
+    Sea $n = 2^k$, con $k = \log_2n$, se tiene\\
+    $x(n) = x(2^{k-1}) + 2^k$\\
+    $= x(2^{k-2}) + 2^{k-1} + 2^k$\\
+    $= x(2^{k-3}) + 2^{k-2} + 2^{k-1} + 2^k$\\.\\.\\.\\
+    $= x(2^{k-i-1}) + 2^{k-i} + 2^{k-i+1} + ... + 2^{k-1} + 2^k$\\.\\.\\.\\
+    $= x(2^0) + 2^0 + 2^1 + ... + 2^{k-1} + 2^k$\\
+    $= 1 + 2^{k+1} - 1 = 2(n)$
+\end{center}
+\subsubsection{Cuarto problema}
+\begin{equation}
+  x(n) =
+    \begin{cases}
+      x(n/3) + 1 &, n>1\\
+      1 &, n=1\\
+    \end{cases}
+\end{equation}
+\begin{center}
+    Sea $n = 3^k$, con $k = \log_3n$, se tiene\\
+    $x(n) = x(3^{k-1}) + 1$\\
+    $= x(3^{k-2}) + 1 + 1 = x(3^{k-2}) + 2$\\
+    $= x(3^{k-3}) + 3$\\.\\.\\.\\
+    $= x(3^{k-i}) + i$\\.\\.\\.\\
+    $= x(3^0) + k = 1 + \log_3n$
+\end{center}
+\subsection{Números perfectos}
+El siguiente algoritmo, irá mostrando números perfectos conforme el usuario le diga, es decir el n-ésimo número perfecto será el último que encuentre dado un número $d$ dado por el usuario.
+\begin{lstlisting}
+encontrarNumeroPerfecto(int c)
+    n = 1
+    i = 0
+    while i < c
+        sum = 0
+        divisor = 1
+        while divisor < n
+          if not n % divisor
+            sum = sum + divisor
+          divisor = divisor + 1
+        if sum == n
+          print(n + " es un numero perfecto")
+          i = i + 1
+        n = n + 1
+\end{lstlisting}
+Primeramente se probó con que encotrará 4 números perfectos, y el resultado de nuestra gráfica fue el siguiente.
+\begin{center}
+    \includegraphics[height = 8cm]{Perfectos/perf1.png}
+\end{center}
+Resultado en consola
+\begin{center}
+    \includegraphics[height = 9cm]{Perfectos/perf1B.png}
+\end{center}
+Como se puede estar observando, a medida que se quiera encontrar otro número perfecto, el tiempo de ejecución es más tardado.\newline
+Seguidamente, se probó con el 5to número perfecto, donde el tiempo aumento significativamente y esto se ve reflejado claramente en la gráfica y en la consola.\newline
+Para el quinto número perfecto la computadora tardó mucho en calcularlo, llevó más de 2 horas y se suspendió, solo quedó trabajando pero nunca apareció ese quinto número perfecto.
+\begin{center}
+    \includegraphics[height = 8cm]{Perfectos/perf3.png}
+\end{center}
+\section{Bibliograf\'ia}
+[1] "An\´alisis de Algoritmos: Complejidad", Lab.dit.upm.es, 1997. [Online].
+Disponible: http://www.lab.dit.upm.es/ lprg/material/apuntes/o/index.
+html. [Acceso: 26- Feb- 2018].
+[2] R. Wachenchauzer, M. Manterola, M. Curia, M. Medrano and N. Paez, Algoritmos de Programaci\´on con Python.
+\end{document}

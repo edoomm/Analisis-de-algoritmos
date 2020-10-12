@@ -1,0 +1,28 @@
+fibo1(int n)
+  if n == 0
+    return 0
+  else if n == 1
+    return 1
+  else
+    return fibo1(n-1) + fibo1(n-2)
+
+fibo2(int n)
+  int i = 0
+  int aux = 0
+  int aux0 = 0
+  int aux1 = 0
+  while i <= n
+    if i == 0
+      res = 0
+      aux0 = 0
+    else if i == 1
+      res = 1
+      aux1 = 1
+    else
+      res = aux0 + aux1
+      aux = aux0
+      aux0 = aux1
+      aux1 = aux1 + aux
+    i = i + 1
+
+  return res
